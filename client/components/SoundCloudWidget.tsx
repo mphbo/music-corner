@@ -12,7 +12,12 @@ declare global {
   }
 }
 
-export function SoundCloudWidget({ url }: { url: string }) {
+interface ISoundCloudWidget {
+  url: string;
+  username: string;
+}
+
+export function SoundCloudWidget({ url, username }: ISoundCloudWidget) {
   // state
 
   // used to communicate between SC widget and React
@@ -109,24 +114,24 @@ export function SoundCloudWidget({ url }: { url: string }) {
   };
 
   return (
-    <div style={{ backgroundColor: "black" }}>
+    <div>
+      <h4>{username}</h4>
       <iframe
         ref={iframeRef}
         id="sound-cloud-player"
         style={{
           border: "none",
-          height: 350,
+          height: 180,
           width: "100%",
-          background: "black",
         }}
         scrolling="no"
         allow="autoplay"
-        src={`https://w.soundcloud.com/player/?url=${url}&amp;auto_play=true;color=#0066CC;`}
+        src={`https://w.soundcloud.com/player/?url=${url}&amp;;color=#0066CC;`}
       ></iframe>
 
-      <Button onClick={() => changePlaylistIndex(false)}>{"<"}</Button>
+      {/* <Button onClick={() => changePlaylistIndex(false)}>{"<"}</Button>
       <Button onClick={togglePlayback}>{isPlaying ? "Pause" : "Play"}</Button>
-      <Button onClick={() => changePlaylistIndex(true)}>{">"}</Button>
+      <Button onClick={() => changePlaylistIndex(true)}>{">"}</Button> */}
     </div>
   );
 }
