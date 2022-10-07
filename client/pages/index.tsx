@@ -1,58 +1,13 @@
-import { Box, Grid } from "grommet";
+import { Anchor, Box, Grid } from "grommet";
+import { Play } from "grommet-icons";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { SoundCloudWidget } from "../components/SoundCloudWidget";
 import styles from "../styles/Home.module.scss";
 
 const Home: NextPage = () => {
-  const users = [
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-  ];
-  const players = users.map((user) => <SoundCloudWidget {...user} />);
   return (
     <div className={styles.container}>
       <Head>
@@ -64,9 +19,10 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <h3>ShwackCloud</h3>
         <h2>Your music... just shwacked.</h2>
-        <Grid columns={["medium"]}>{players}</Grid>
+        <Link href="/play">
+          <Anchor icon={<Play />} />
+        </Link>
       </main>
-
       <footer className={styles.footer}></footer>
     </div>
   );
