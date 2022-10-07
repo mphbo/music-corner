@@ -1,5 +1,5 @@
 import { Anchor, Header, Nav } from "grommet";
-import { ChatOption, Home, Play } from "grommet-icons";
+import { Home, Login, Play } from "grommet-icons";
 import Link from "next/link";
 import React from "react";
 
@@ -19,7 +19,7 @@ function Layout({ children }: ILayout) {
             <Anchor icon={<Play />} />
           </Link>
           <Link href="/registration">
-            <Anchor icon={<ChatOption />} />
+            <Anchor icon={<Login />} />
           </Link>
         </Nav>
       </Header>

@@ -4,16 +4,32 @@ import { Grommet } from "grommet";
 import { useState } from "react";
 import Layout from "../components/Layout";
 
+enum colors {
+  primary = "#228BE6",
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = useState({
     global: {
       colors: {
-        brand: "#228BE6",
+        brand: colors.primary,
       },
       font: {
         family: "'M PLUS Rounded 1c', sans-serif",
         size: "18px",
         height: "20px",
+      },
+    },
+    formField: {
+      border: {
+        color: {
+          light: colors.primary,
+        },
+      },
+    },
+    button: {
+      color: {
+        light: "white",
       },
     },
   });
