@@ -22,7 +22,7 @@ const pgClient = new Pool({
 pgClient.on("connect", (client) => {
   client
     .query(
-      "CREATE TABLE IF NOT EXISTS users (username varchar(255), email varchar(255), passwordSalt varchar(255))"
+      "CREATE TABLE IF NOT EXISTS users (username varchar(255), email varchar(255), url varchar(255), passwordhash varchar(255))"
     )
     .catch((err) => console.error(err));
 });
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 
 import usersRoutes from "./routes/users";
 
-app.use("/api/users", usersRoutes(pgClient));
+app.use("/users", usersRoutes(pgClient));
 
 app.listen(5000, () => {
   console.log("Listening on port 5000");

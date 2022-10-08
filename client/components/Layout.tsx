@@ -18,7 +18,7 @@ function Layout({ children }: ILayout) {
           <Link href="/play">
             <Anchor icon={<Play />} />
           </Link>
-          <Link href="/registration">
+          <Link href="/login">
             <Anchor icon={<Login />} />
           </Link>
         </Nav>
