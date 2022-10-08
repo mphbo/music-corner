@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "body-parser": "*",
+    "cors": "2.8.4",
+    "express": "4.16.3",
+    "pg": "8.0.3"
+  },
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "build": "npm-run-all clean tsc",
+    "dev:start": "npm-run-all build start",
+    "dev": "nodemon --watch src -e ts --exec npm run dev:start",
+    "start": "node ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^14.18.31",
+    "@types/pg": "^8.6.5",
+    "@types/shelljs": "^0.8.11",
+    "fs-extra": "^10.1.0",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
