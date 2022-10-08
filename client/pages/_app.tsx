@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { Grommet } from "grommet";
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { AuthProvider } from "../context/auth";
 
 enum colors {
   primary = "#228BE6",
@@ -36,9 +37,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Grommet theme={theme}>
-      <Layout>
-        <Component {...pageProps} setTheme={setTheme} />
-      </Layout>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} setTheme={setTheme} />
+        </Layout>
+      </AuthProvider>
     </Grommet>
   );
 }

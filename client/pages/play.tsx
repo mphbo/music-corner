@@ -1,59 +1,23 @@
-import { Box, Grid } from "grommet";
+import axios from "axios";
+import { Grid } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { SoundCloudWidget } from "../components/SoundCloudWidget";
 import styles from "../styles/Home.module.scss";
+import { IUser } from "../context/auth";
+import { useEffect, useState } from "react";
 
 const Play: NextPage = () => {
-  const users = [
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/rwdy-music/get-rwdy-3",
-      username: "Gregolas",
-    },
-  ];
-  const players = users.map((user) => (
-    <div key={user.username}>
+  const [users, setUsers] = useState<IUser[] | []>([]);
+
+  useEffect(() => {
+    axios.get("/api/users").then(({ data }) => {
+      setUsers(data);
+    });
+  }, []);
+
+  const players = users.map((user, index) => (
+    <div key={index}>
       <SoundCloudWidget {...user} />
     </div>
   ));

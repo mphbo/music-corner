@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "../styles/Registration.module.scss";
 import axios from "axios";
+import { useAuthContext } from "../context/auth";
 
 interface IFormData {
   email: string;
@@ -18,14 +19,19 @@ const initialState = {
 
 const Login: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
+  const [error, setError] = useState<string>("");
+  const { setUser } = useAuthContext();
 
   const handleSubmit = (value: IFormData) => {
     axios
-      .post("localhost:3000/api/users/login", formData)
-      .then((response) => {
-        console.log(response);
+      .post("/api/users/login", formData)
+      .then(({ data }) => {
+        setUser(data);
       })
-      .catch((e) => console.log("error:", e));
+      .catch(({ response: { data } }) => {
+        setError(data);
+        setUser(null);
+      });
   };
 
   const handleReset = () => {

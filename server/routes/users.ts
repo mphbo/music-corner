@@ -5,7 +5,7 @@ const router = express.Router();
 
 const usersRoutes = (db: Pool) => {
   router.get("/", async (req, res) => {
-    const users = await db.query("SELECT * from users");
+    const users = await db.query("SELECT username, url FROM users");
 
     res.send(users.rows);
   });
@@ -19,10 +19,16 @@ const usersRoutes = (db: Pool) => {
   router.post("/", async (req, res) => {
     const { username, email, url, password } = req.body;
 
-    const users = await db.query(`SELECT * FROM users WHERE email='${email}'`);
-    if (users.rows.length > 0) {
-      res.status(403).send("Email already exists");
-      return;
+    const user = (
+      await db.query(
+        `SELECT * FROM users WHERE username='${username}' OR email='${email}'`
+      )
+    ).rows[0];
+
+    if (user) {
+      return user.email === email
+        ? res.status(403).send("Email already exists")
+        : res.status(403).send("Username already exists");
     }
 
     await bcrypt.genSalt(10, (err, salt) => {
@@ -41,21 +47,23 @@ const usersRoutes = (db: Pool) => {
   router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const users = await db.query(`SELECT * FROM users WHERE email='${email}'`);
-    if (users.rows.length === 0) {
+    const users = (await db.query(`SELECT * FROM users WHERE email='${email}'`))
+      .rows;
+    if (users.length === 0) {
       res.status(403).send("Email does not exist.");
       return;
     }
 
-    await bcrypt.compare(
-      password,
-      users.rows[0].passwordhash,
-      (err, result) => {
-        result === false
-          ? res.status(401).send("Incorrect email/password combination.")
-          : res.status(200).send("Successfully logged in!");
-      }
-    );
+    const user = users[0];
+    const { username, url } = user;
+
+    await bcrypt.compare(password, user.passwordhash, (err, result) => {
+      err
+        ? res.status(500).send("Error decrypting password.")
+        : result === false
+        ? res.status(401).send("Incorrect email/password combination.")
+        : res.status(200).send({ email, username, url });
+    });
   });
   return router;
 };

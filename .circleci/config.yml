@@ -1,0 +1,67 @@
+version: 2.1
+executors:
+  docker-publisher:
+    environment:
+      CLIENT_IMAGE_NAME: mphbo777/music-corner-web
+      NGINX_IMAGE_NAME: mphbo777/music-corner-larry-nginx
+      SERVER_IMAGE_NAME: mphbo777/music-corner-api
+      
+    docker:
+      - image: circleci/buildpack-deps:stretch
+jobs:
+  build:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Images
+          command: | 
+            docker build -t $CLIENT_IMAGE_NAME:latest ./client
+            docker build -t $NGINX_IMAGE_NAME:latest ./nginx
+            docker build -t $SERVER_IMAGE_NAME:latest ./server
+      - run:
+          name: Archive Docker Images
+          command: |
+            docker save -o web.tar $CLIENT_IMAGE_NAME
+            docker save -o nginx.tar $NGINX_IMAGE_NAME
+            docker save -o api.tar $SERVER_IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./client.tar
+            - ./nginx.tar
+            - ./server.tar
+  publish-latest:
+    executor: docker-publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load Archived Docker Images
+          command: |
+            docker load -i /tmp/workspace/client.tar
+            docker load -i /tmp/workspace/nginx.tar
+            docker load -i /tmp/workspace/server.tar
+      - run:
+          name: Publish Docker Images to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $CLIENT_IMAGE_NAME:latest
+            docker push $NGINX_IMAGE_NAME:latest
+            docker push $SERVER_IMAGE_NAME:latest
+workflows:
+  version: 2
+  build-main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - publish-latest:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

@@ -3,12 +3,14 @@ import { Box, Button, Form, FormField, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useAuthContext } from "../context/auth";
 import styles from "../styles/Registration.module.scss";
 
 interface IFormData {
   username: string;
   email: string;
+  url: string;
   password: string;
   passwordConfirm: string;
 }
@@ -16,26 +18,31 @@ interface IFormData {
 const initialState = {
   username: "",
   email: "",
+  url: "",
   password: "",
   passwordConfirm: "",
 };
 
 const Registration: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const { user, setUser } = useAuthContext();
 
   const handleSubmit = (value: IFormData) => {
     if (formData.password !== formData.passwordConfirm) {
-      setError(true);
+      setError("Passwords do not match.");
       return;
     }
     axios
-      .post("http://localhost:3000/api/users", formData)
-      .then((response) => {
-        console.log(response);
+      .post("/api/users", formData)
+      .then(({ data }) => {
+        setUser(data);
       })
-      .catch((e) => console.log("error:", e));
+      .catch(({ response: { data } }) => setError(data));
   };
+
+  console.log(error);
+  console.log(user);
 
   const handleReset = () => {
     setFormData(initialState);
@@ -63,6 +70,9 @@ const Registration: NextPage = () => {
           </FormField>
           <FormField name="email" label="Email">
             <TextInput name="email" />
+          </FormField>
+          <FormField name="url" label="SoundCloud Playlist URL">
+            <TextInput name="url" />
           </FormField>
           <FormField name="password" label="Password">
             <TextInput name="password" />
