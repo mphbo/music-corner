@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Box, Button, Form, FormField, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -21,8 +22,20 @@ const initialState = {
 
 const Registration: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
+  const [error, setError] = useState<boolean>(false);
 
-  const handleSubmit = (value: IFormData) => {};
+  const handleSubmit = (value: IFormData) => {
+    if (formData.password !== formData.passwordConfirm) {
+      setError(true);
+      return;
+    }
+    axios
+      .post("http://localhost:3000/api/users", formData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log("error:", e));
+  };
 
   const handleReset = () => {
     setFormData(initialState);

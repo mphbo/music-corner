@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "../styles/Registration.module.scss";
+import axios from "axios";
 
 interface IFormData {
   email: string;
@@ -18,7 +19,14 @@ const initialState = {
 const Login: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
 
-  const handleSubmit = (value: IFormData) => {};
+  const handleSubmit = (value: IFormData) => {
+    axios
+      .post("localhost:3000/api/users/login", formData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log("error:", e));
+  };
 
   const handleReset = () => {
     setFormData(initialState);

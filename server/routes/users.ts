@@ -31,7 +31,7 @@ const usersRoutes = (db: Pool) => {
           "INSERT INTO users (username, email, url, passwordhash) VALUES($1, $2, $3, $4)",
           [username, email, url, passwordhash]
         );
-        if (!err) res.status(200).send({ username, email, url, passwordhash });
+        if (!err) res.status(200).send({ username, email, url });
         else {
           res.status(500).send("Error creating account.");
         }
