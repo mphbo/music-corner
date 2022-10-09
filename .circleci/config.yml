@@ -23,9 +23,9 @@ jobs:
       - run:
           name: Archive Docker Images
           command: |
-            docker save -o web.tar $CLIENT_IMAGE_NAME
+            docker save -o client.tar $CLIENT_IMAGE_NAME
             docker save -o nginx.tar $NGINX_IMAGE_NAME
-            docker save -o api.tar $SERVER_IMAGE_NAME
+            docker save -o server.tar $SERVER_IMAGE_NAME
       - persist_to_workspace:
           root: .
           paths:
