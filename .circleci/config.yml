@@ -2,9 +2,9 @@ version: 2.1
 executors:
   docker-publisher:
     environment:
-      CLIENT_IMAGE_NAME: mphbo777/music-corner-web
-      NGINX_IMAGE_NAME: mphbo777/music-corner-larry-nginx
-      SERVER_IMAGE_NAME: mphbo777/music-corner-api
+      CLIENT_IMAGE_NAME: mphbo777/music-corner-client
+      NGINX_IMAGE_NAME: mphbo777/music-corner-nginx
+      SERVER_IMAGE_NAME: mphbo777/music-corner-server
       
     docker:
       - image: circleci/buildpack-deps:stretch
@@ -17,8 +17,8 @@ jobs:
       - run:
           name: Build Docker Images
           command: | 
-            docker build -t $NGINX_IMAGE_NAME:latest ./nginx
             docker build -t $CLIENT_IMAGE_NAME:latest ./client
+            docker build -t $NGINX_IMAGE_NAME:latest ./nginx
             docker build -t $SERVER_IMAGE_NAME:latest ./server
       - run:
           name: Archive Docker Images
