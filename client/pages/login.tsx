@@ -67,7 +67,7 @@ const Login: NextPage = () => {
           </Box>
         </Form>
         <Link href="/registration">
-          <p className={styles.account}>Don't have an account? Register</p>
+          <p className={styles.account}>Don&apos;t have an account? Register</p>
         </Link>
       </main>
     </div>
