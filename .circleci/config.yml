@@ -17,8 +17,8 @@ jobs:
       - run:
           name: Build Docker Images
           command: | 
-            docker build -t $CLIENT_IMAGE_NAME:latest ./client
             docker build -t $NGINX_IMAGE_NAME:latest ./nginx
+            docker build -t $CLIENT_IMAGE_NAME:latest ./client
             docker build -t $SERVER_IMAGE_NAME:latest ./server
       - run:
           name: Archive Docker Images
