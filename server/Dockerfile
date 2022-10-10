@@ -2,5 +2,10 @@ FROM node:16-alpine
 WORKDIR '/app,'
 COPY ./package.json ./
 RUN npm install
-COPY . .
+RUN npm build
+
+# Copy tsc build into /app of final image, as well as modules and package lock
+COPY ./node_modules .
+COPY ./package-lock.json .
+COPY ./dist .
 CMD ["npm", "run", "start"]
