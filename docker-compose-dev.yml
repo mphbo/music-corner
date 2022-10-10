@@ -17,7 +17,7 @@ services:
     depends_on:
       - postgres 
     build: 
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: './server'
     volumes:
       - /app/node_modules
