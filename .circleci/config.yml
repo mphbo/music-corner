@@ -69,8 +69,7 @@ workflows:
               only: master
       - eb/deploy:
           context: aws-creds
-          application-name: music-corner
-          environment-name: Musiccorner-env
+          environment-name: music-corner
           filters:
             branches:
               only: master
