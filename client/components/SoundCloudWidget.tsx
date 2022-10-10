@@ -2,6 +2,8 @@ import React, { useState, useEffect, createRef, useRef } from "react";
 
 import loadscript from "load-script";
 import { Button } from "grommet";
+import { useAuthContext } from "../context/auth";
+import axios from "axios";
 
 // SoundCloud widget API
 //  https://developers.soundcloud.com/docs/api/html5-widget
@@ -13,12 +15,14 @@ declare global {
 }
 
 interface ISoundCloudWidget {
-  url: string;
   username: string;
+  email: string;
+  url: string;
 }
 
-export function SoundCloudWidget({ url, username }: ISoundCloudWidget) {
+export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
   // state
+  const { user } = useAuthContext();
 
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -113,9 +117,18 @@ export function SoundCloudWidget({ url, username }: ISoundCloudWidget) {
     });
   };
 
+  const handleDelete = () => {
+    axios.delete(`/users/:${email}`).then((response) => {
+      console.log("responseFromDelete:", response);
+    });
+  };
+
   return (
     <div>
       <h4>{username}</h4>
+      {user?.email === "logannormanthomas@protonmail.com" && (
+        <Button label="Delete" onClick={handleDelete} />
+      )}
       <iframe
         ref={iframeRef}
         id="sound-cloud-player"

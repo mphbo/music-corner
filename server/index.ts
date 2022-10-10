@@ -34,8 +34,10 @@ app.get("/", (req, res) => {
 });
 
 import usersRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
 
 app.use("/users", usersRoutes(pgClient));
+app.use("/auth", authRoutes(pgClient));
 
 app.listen(5000, () => {
   console.log("Listening on port 5000");

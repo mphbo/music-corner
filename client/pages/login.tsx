@@ -6,6 +6,7 @@ import { useState } from "react";
 import styles from "../styles/Registration.module.scss";
 import axios from "axios";
 import { useAuthContext } from "../context/auth";
+import { useRouter } from "next/router";
 
 interface IFormData {
   email: string;
@@ -21,12 +22,14 @@ const Login: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
   const [error, setError] = useState<string>("");
   const { setUser } = useAuthContext();
+  const router = useRouter();
 
   const handleSubmit = (value: IFormData) => {
     axios
-      .post("/api/users/login", formData)
+      .post("/api/auth/login", formData)
       .then(({ data }) => {
         setUser(data);
+        router.push("/play");
       })
       .catch(({ response: { data } }) => {
         setError(data);
@@ -59,7 +62,7 @@ const Login: NextPage = () => {
             <TextInput name="email" />
           </FormField>
           <FormField name="password" label="Password">
-            <TextInput name="password" />
+            <TextInput name="password" type="password" />
           </FormField>
           <Box className={styles.buttonGroup} direction="row" gap="medium">
             <Button type="submit" primary label="Submit" />

@@ -3,6 +3,7 @@ import { Box, Button, Form, FormField, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAuthContext } from "../context/auth";
 import styles from "../styles/Registration.module.scss";
@@ -27,6 +28,7 @@ const Registration: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(initialState);
   const [error, setError] = useState<string>("");
   const { user, setUser } = useAuthContext();
+  const router = useRouter();
 
   const handleSubmit = (value: IFormData) => {
     if (formData.password !== formData.passwordConfirm) {
@@ -34,15 +36,13 @@ const Registration: NextPage = () => {
       return;
     }
     axios
-      .post("/api/users", formData)
+      .post("/api/auth/register", formData)
       .then(({ data }) => {
         setUser(data);
+        router.push("/play");
       })
       .catch(({ response: { data } }) => setError(data));
   };
-
-  console.log(error);
-  console.log(user);
 
   const handleReset = () => {
     setFormData(initialState);
@@ -75,10 +75,10 @@ const Registration: NextPage = () => {
             <TextInput name="url" />
           </FormField>
           <FormField name="password" label="Password">
-            <TextInput name="password" />
+            <TextInput name="password" type="password" />
           </FormField>
           <FormField name="passwordConfirm" label="Confirm your password">
-            <TextInput name="passwordConfirm" />
+            <TextInput name="passwordConfirm" type="password" />
           </FormField>
           <Box className={styles.buttonGroup} direction="row" gap="medium">
             <Button type="submit" primary label="Submit" />
