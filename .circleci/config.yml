@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  eb: circleci/aws-elastic-beanstalk@1.0.0
+  aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@2.0.1
 executors:
   docker-publisher:
     environment:
@@ -66,7 +66,7 @@ workflows:
           filters:
             branches:
               only: master
-      - eb/deploy:
+      - aws-elastic-beanstalk/deploy:
           context: aws-creds
           application-name: music-corner
           environment-name: Musiccorner-env
