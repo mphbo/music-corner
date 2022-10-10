@@ -4,33 +4,19 @@ services:
     image: "mphbo777/music-corner-client"
     mem_limit: 128m
     hostname: client
-    build:
-      dockerfile: Dockerfile
-      context: './client'
-  nginx:
-    image: "mphbo777/music-corner-nginx"
-    mem_limit: 128m
-    hostname: nginx
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - '80:80'
   server:
     image: mphbo777/music-corner-server
     mem_limit: 128m
     hostname: api
-    build: 
-      dockerfile: Dockerfile
-      context: './server'
-    volumes:
-      - /app/node_modules
-      - ./server:/app
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
-    
+  nginx:
+    image: "mphbo777/music-corner-nginx"
+    mem_limit: 128m
+    hostname: nginx
+    ports:
+      - '80:80'
