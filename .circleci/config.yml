@@ -71,7 +71,6 @@ workflows:
           context: aws-creds
           environment-name: Musiccorner-env
           application-name: music-corner
-          bucket_name:
           filters:
             branches:
               only: master
