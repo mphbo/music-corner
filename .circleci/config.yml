@@ -68,8 +68,8 @@ workflows:
               only: master
       - aws-elastic-beanstalk/deploy:
           context: aws-creds
-          application-name: music-corner
-          environment-name: Musiccorner-env
+          application-name: music-corner-1
+          environment-name: Musiccorner1-env
           filters:
             branches:
               only: master

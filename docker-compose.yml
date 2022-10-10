@@ -9,11 +9,11 @@ services:
     mem_limit: 128m
     hostname: api
     environment:
-      - PGUSER=postgres
-      - PGHOST=postgres
-      - PGDATABASE=users
-      - PGPASSWORD=postgrespassword
-      - PGPORT=5432
+      - PGUSER=$PGUSER
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGPASSWORD=$PGDATABASE
+      - PGPORT=$PGPORT
   nginx:
     image: "mphbo777/music-corner-nginx"
     mem_limit: 128m
