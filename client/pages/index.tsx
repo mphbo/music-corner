@@ -20,11 +20,9 @@ const Home: NextPage = () => {
         <h3>ShwackCloud</h3>
         <h2>Your music... just shwacked.</h2>
         <div style={{ marginTop: 60 }}>
-          {user && (
-            <Link href="/play">
-              <Anchor icon={<Play size="xlarge" />} />
-            </Link>
-          )}
+          <Link href="/play">
+            <Anchor icon={<Play size="xlarge" />} />
+          </Link>
         </div>
       </main>
       <footer className={styles.footer}></footer>

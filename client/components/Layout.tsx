@@ -25,11 +25,9 @@ function Layout({ children }: ILayout) {
           <Link href="/">
             <Anchor icon={<Home />} />
           </Link>
-          {user && (
-            <Link href="/play">
-              <Anchor icon={<Play />} />
-            </Link>
-          )}
+          <Link href="/play">
+            <Anchor icon={<Play />} />
+          </Link>
           {user ? (
             <Anchor onClick={handleLogout} icon={<Logout />} />
           ) : (
