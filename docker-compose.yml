@@ -11,8 +11,8 @@ services:
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
+      - PGDATABASE=users
+      - PGPASSWORD=postgrespassword
       - PGPORT=5432
   nginx:
     image: "mphbo777/music-corner-nginx"
