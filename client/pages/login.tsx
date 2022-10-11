@@ -7,39 +7,70 @@ import styles from "../styles/Registration.module.scss";
 import axios from "axios";
 import { useAuthContext } from "../context/auth";
 import { useRouter } from "next/router";
-
-interface IFormData {
-  email: string;
-  password: string;
-}
-
-const initialState = {
-  email: "",
-  password: "",
-};
+import { IErrors, IFormData } from "../types/login";
+import {
+  errorsInitialState,
+  formDataInitialState,
+  formFields,
+} from "../constants/login";
 
 const Login: NextPage = () => {
-  const [formData, setFormData] = useState<IFormData>(initialState);
-  const [error, setError] = useState<string>("");
+  const [formData, setFormData] = useState<IFormData>(formDataInitialState);
+  const [errors, setErrors] = useState<IErrors>(errorsInitialState);
+  const [serverError, setServerError] = useState("");
   const { setUser } = useAuthContext();
   const router = useRouter();
 
-  const handleSubmit = (value: IFormData) => {
+  const handleSubmit = (formData: IFormData) => {
+    setErrors(errorsInitialState);
+
+    const currentErrors = (
+      Object.keys(formData) as (keyof typeof formData)[]
+    ).filter((field) => {
+      if (!formData[field]) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: { ...prev[field], isError: true },
+        }));
+        return true;
+      }
+      return false;
+    });
+
+    if (currentErrors.length > 0) {
+      return;
+    }
+
     axios
       .post("/api/auth/login", formData)
       .then(({ data }) => {
         setUser(data);
         router.push("/play");
       })
-      .catch(({ response: { data } }) => {
-        setError(data);
-        setUser(null);
-      });
+      .catch(({ response: { data } }) => setServerError(data));
   };
 
-  const handleReset = () => {
-    setFormData(initialState);
+  const handleResetFormData = () => {
+    setFormData(formDataInitialState);
   };
+
+  const formFieldElements = formFields.map(
+    ({ name, label, help, placeholder }) => {
+      return (
+        <FormField
+          name={name}
+          label={label}
+          help={help}
+          error={
+            errors[name as keyof typeof errors].isError &&
+            errors[name as keyof typeof errors].description
+          }
+        >
+          <TextInput placeholder={placeholder} name={name} />
+        </FormField>
+      );
+    }
+  );
 
   return (
     <div>
@@ -55,15 +86,10 @@ const Login: NextPage = () => {
           className={styles.form}
           value={formData}
           onChange={(value) => setFormData(value)}
-          onReset={handleReset}
+          onReset={handleResetFormData}
           onSubmit={({ value }) => handleSubmit(value)}
         >
-          <FormField name="email" label="Email">
-            <TextInput name="email" />
-          </FormField>
-          <FormField name="password" label="Password">
-            <TextInput name="password" type="password" />
-          </FormField>
+          {formFieldElements}
           <Box className={styles.buttonGroup} direction="row" gap="medium">
             <Button type="submit" primary label="Submit" />
             <Button type="reset" secondary label="Reset" />

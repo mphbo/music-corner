@@ -5,48 +5,85 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  errorsInitialState,
+  formDataInitialState,
+  formFields,
+} from "../constants/registration";
 import { useAuthContext } from "../context/auth";
+import { capitalizeFirstLetter } from "../helpers/capitalizeFirstLetter";
 import styles from "../styles/Registration.module.scss";
-
-interface IFormData {
-  username: string;
-  email: string;
-  url: string;
-  password: string;
-  passwordConfirm: string;
-}
-
-const initialState = {
-  username: "",
-  email: "",
-  url: "",
-  password: "",
-  passwordConfirm: "",
-};
+import { IErrors, IFormData } from "../types/registration";
 
 const Registration: NextPage = () => {
-  const [formData, setFormData] = useState<IFormData>(initialState);
-  const [error, setError] = useState<string>("");
+  const [formData, setFormData] = useState<IFormData>(formDataInitialState);
+  const [errors, setErrors] = useState<IErrors>(errorsInitialState);
+  const [serverError, setServerError] = useState("");
+
   const { user, setUser } = useAuthContext();
   const router = useRouter();
 
-  const handleSubmit = (value: IFormData) => {
-    if (formData.password !== formData.passwordConfirm) {
-      setError("Passwords do not match.");
+  console.log(errors);
+
+  const handleSubmit = (formData: IFormData) => {
+    const { password, passwordConfirm } = formData;
+    setErrors(errorsInitialState);
+
+    const currentErrors = (
+      Object.keys(formData) as (keyof typeof formData)[]
+    ).filter((field) => {
+      if (!formData[field]) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: { ...prev[field], isError: true },
+        }));
+        return true;
+      }
+      return false;
+    });
+
+    if (currentErrors.length > 0) {
       return;
     }
+
+    if (password !== passwordConfirm) {
+      setErrors((prev: IErrors) => ({
+        ...prev,
+        passwordConfirm: { ...prev.passwordConfirm, isError: true },
+      }));
+      return;
+    }
+
     axios
       .post("/api/auth/register", formData)
       .then(({ data }) => {
         setUser(data);
         router.push("/play");
       })
-      .catch(({ response: { data } }) => setError(data));
+      .catch(({ response: { data } }) => setServerError(data));
   };
 
-  const handleReset = () => {
-    setFormData(initialState);
+  const handleResetFormData = () => {
+    setFormData(formDataInitialState);
   };
+
+  const formFieldElements = formFields.map(
+    ({ name, label, help, placeholder }) => {
+      return (
+        <FormField
+          name={name}
+          label={label}
+          help={help}
+          error={
+            errors[name as keyof typeof errors].isError &&
+            errors[name as keyof typeof errors].description
+          }
+        >
+          <TextInput placeholder={placeholder} name={name} />
+        </FormField>
+      );
+    }
+  );
 
   return (
     <div>
@@ -62,24 +99,10 @@ const Registration: NextPage = () => {
           className={styles.form}
           value={formData}
           onChange={(value) => setFormData(value)}
-          onReset={handleReset}
+          onReset={handleResetFormData}
           onSubmit={({ value }) => handleSubmit(value)}
         >
-          <FormField name="username" label="Username">
-            <TextInput name="username" />
-          </FormField>
-          <FormField name="email" label="Email">
-            <TextInput name="email" />
-          </FormField>
-          <FormField name="url" label="SoundCloud Playlist URL">
-            <TextInput name="url" />
-          </FormField>
-          <FormField name="password" label="Password">
-            <TextInput name="password" type="password" />
-          </FormField>
-          <FormField name="passwordConfirm" label="Confirm your password">
-            <TextInput name="passwordConfirm" type="password" />
-          </FormField>
+          {formFieldElements}
           <Box className={styles.buttonGroup} direction="row" gap="medium">
             <Button type="submit" primary label="Submit" />
             <Button type="reset" secondary label="Reset" />
