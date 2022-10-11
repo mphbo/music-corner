@@ -15,6 +15,17 @@
   }
 }
 
+.icon {
+  margin-top: 60px;
+  display: flex;
+  line-height: 1.2;
+  font-size: 12px;
+  align-items: center;
+  max-width: 798px;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .footer {
   display: flex;
   flex: 1;

@@ -1,10 +1,12 @@
 import { Anchor } from "grommet";
-import { Play } from "grommet-icons";
+import { Login, Play } from "grommet-icons";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuthContext } from "../context/auth";
 import styles from "../styles/Home.module.scss";
+import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Home: NextPage = () => {
   const { user } = useAuthContext();
@@ -17,11 +19,19 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h3>ShwackCloud</h3>
-        <h2>Your music... just shwacked.</h2>
-        <div style={{ marginTop: 60 }}>
+        <Image src={shwackCloudImage} />
+        <div className={styles.icon}>
+          <h1>
+            Login or register to create or edit your account and SoundCloud URL
+          </h1>
           <Link href="/play">
-            <Anchor icon={<Play size="xlarge" />} />
+            <Anchor icon={<Login size="large" />} />
+          </Link>
+        </div>
+        <div className={styles.icon} style={{}}>
+          <h1>Skip and play existing playlists</h1>
+          <Link href="/play">
+            <Anchor icon={<Play size="large" />} />
           </Link>
         </div>
       </main>

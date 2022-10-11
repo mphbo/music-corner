@@ -70,7 +70,7 @@ export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
 
   useEffect(() => {
     if (player) player.setVolume(10);
-  }, [[player]]);
+  }, [player]);
 
   // integration - update SC player based on new state (e.g. play button in React section was click)
 

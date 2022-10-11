@@ -1,9 +1,12 @@
 import { Anchor, Header, Nav } from "grommet";
 import { Home, Login, Logout, Play } from "grommet-icons";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAuthContext } from "../context/auth";
+import { useAuthContext } from "../../context/auth";
+import ShwackCloudIcon from "../../public/ShwackCloudIcon.png";
+import styles from "./styles/Layout.module.scss";
 
 interface ILayout {
   children: any;
@@ -23,16 +26,18 @@ function Layout({ children }: ILayout) {
       <Header sticky="scrollup">
         <Nav direction="row" width="full" background="brand" pad="medium">
           <Link href="/">
-            <Anchor icon={<Home />} />
+            <Anchor className={styles.icon}>
+              <Image width={24} height={24} src={ShwackCloudIcon} />
+            </Anchor>
           </Link>
           <Link href="/play">
-            <Anchor icon={<Play />} />
+            <Anchor icon={<Play color="white" />} />
           </Link>
           {user ? (
             <Anchor onClick={handleLogout} icon={<Logout />} />
           ) : (
             <Link href="/login">
-              <Anchor icon={<Login />} />
+              <Anchor icon={<Login color="white" />} />
             </Link>
           )}
         </Nav>

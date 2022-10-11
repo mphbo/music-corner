@@ -6,6 +6,8 @@ import { SoundCloudWidget } from "../components/SoundCloudWidget";
 import styles from "../styles/Home.module.scss";
 import { IUser } from "../context/auth";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Play: NextPage = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
@@ -30,8 +32,7 @@ const Play: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h3>ShwackCloud</h3>
-        <h2>Your music... just shwacked.</h2>
+        <Image src={shwackCloudImage} />
         <Grid>{players}</Grid>
       </main>
 
