@@ -8,9 +8,10 @@ const authRoutes = (db: Pool) => {
     const { username, email, url, password } = req.body;
 
     const user = (
-      await db.query(
-        `SELECT * FROM users WHERE username='${username}' OR email='${email}'`
-      )
+      await db.query(`SELECT * FROM users WHERE username=$1 OR email=$2`, [
+        username,
+        email,
+      ])
     ).rows[0];
 
     if (user) {
@@ -35,8 +36,9 @@ const authRoutes = (db: Pool) => {
   router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const users = (await db.query(`SELECT * FROM users WHERE email='${email}'`))
-      .rows;
+    const users = (
+      await db.query(`SELECT * FROM users WHERE email=$1`, [email])
+    ).rows;
     if (users.length === 0) {
       res.status(403).send("Email does not exist.");
       return;

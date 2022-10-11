@@ -13,54 +13,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const router = express_1.default.Router();
 const usersRoutes = (db) => {
     router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const users = yield db.query("SELECT username, url FROM users");
+        const users = yield db.query("SELECT username, email, url FROM users");
         res.send(users.rows);
     }));
     router.get("/:email", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email } = req.params;
-        const user = yield db.query(`SELECT * FROM users WHERE email=${email}`);
-        res.send(user.rows);
+        const user = (yield db.query(`SELECT * FROM users WHERE email=$1`, [email]))
+            .rows[0];
+        res.send(user);
     }));
-    router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { username, email, url, password } = req.body;
-        const user = (yield db.query(`SELECT * FROM users WHERE username='${username}' OR email='${email}'`)).rows[0];
-        if (user) {
-            return user.email === email
-                ? res.status(403).send("Email already exists")
-                : res.status(403).send("Username already exists");
+    router.put("/:userEmail", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { userEmail } = req.params;
+        const { email, username, url } = req.body;
+        const user = (yield db.query(`SELECT * FROM users WHERE email=$1`, [userEmail])).rows[0];
+        if (!user) {
+            return res.status(403).send("Email does not exist");
         }
-        yield bcrypt_1.default.genSalt(10, (err, salt) => {
-            bcrypt_1.default.hash(password, salt, (err, passwordhash) => {
-                db.query("INSERT INTO users (username, email, url, passwordhash) VALUES($1, $2, $3, $4)", [username, email, url, passwordhash]);
-                if (!err)
-                    res.status(200).send({ username, email, url });
-                else {
-                    res.status(500).send("Error creating account.");
-                }
-            });
-        });
+        const updatedUser = (yield db.query(`UPDATE users SET email=$1, username=$2, url=$3 WHERE email=$4 RETURNING email, username, url;`, [email, username, url, userEmail])).rows[0];
+        res.send(updatedUser);
     }));
-    router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { email, password } = req.body;
-        const users = (yield db.query(`SELECT * FROM users WHERE email='${email}'`))
-            .rows;
-        if (users.length === 0) {
-            res.status(403).send("Email does not exist.");
-            return;
-        }
-        const user = users[0];
-        const { username, url } = user;
-        yield bcrypt_1.default.compare(password, user.passwordhash, (err, result) => {
-            err
-                ? res.status(500).send("Error decrypting password.")
-                : result === false
-                    ? res.status(401).send("Incorrect email/password combination.")
-                    : res.status(200).send({ email, username, url });
-        });
+    router.delete("/:email", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { email } = req.params;
+        // Delete user
+        const response = yield db.query(`DELETE FROM users WHERE email=$1`, [
+            email,
+        ]);
+        res.send(response.rows);
+        // Return all users that still exist
+        const users = yield db.query("SELECT username, url FROM users");
+        res.send(users.rows);
     }));
     return router;
 };

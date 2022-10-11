@@ -1,5 +1,5 @@
 import { Anchor, Header, Nav } from "grommet";
-import { Home, Login, Logout, Play } from "grommet-icons";
+import { Home, Login, Logout, Play, User } from "grommet-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -34,10 +34,15 @@ function Layout({ children }: ILayout) {
             <Anchor icon={<Play color="white" />} />
           </Link>
           {user ? (
-            <Anchor onClick={handleLogout} icon={<Logout />} />
+            <Anchor icon={<Logout color="white" />} onClick={handleLogout} />
           ) : (
             <Link href="/login">
               <Anchor icon={<Login color="white" />} />
+            </Link>
+          )}
+          {user && (
+            <Link href="/profile">
+              <Anchor icon={<User color="white" />} />
             </Link>
           )}
         </Nav>

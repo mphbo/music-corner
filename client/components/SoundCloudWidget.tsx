@@ -118,9 +118,7 @@ export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
   };
 
   const handleDelete = () => {
-    axios.delete(`/users/:${email}`).then((response) => {
-      console.log("responseFromDelete:", response);
-    });
+    axios.delete(`/users/:${email}`).then((response) => {});
   };
 
   return (

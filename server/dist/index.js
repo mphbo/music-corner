@@ -30,7 +30,9 @@ app.get("/", (req, res) => {
     res.send("Hi");
 });
 const users_1 = __importDefault(require("./routes/users"));
+const auth_1 = __importDefault(require("./routes/auth"));
 app.use("/users", (0, users_1.default)(pgClient));
+app.use("/auth", (0, auth_1.default)(pgClient));
 app.listen(5000, () => {
     console.log("Listening on port 5000");
 });

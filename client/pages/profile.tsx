@@ -7,18 +7,18 @@ import styles from "../styles/Registration.module.scss";
 import axios from "axios";
 import { useAuthContext } from "../context/auth";
 import { useRouter } from "next/router";
-import { IErrors, IFormData } from "../types/login";
+import { IErrors, IFormData } from "../types/profile";
 import {
   errorsInitialState,
   formDataInitialState,
   formFields,
-} from "../constants/login";
+} from "../constants/profile";
 
-const Login: NextPage = () => {
-  const [formData, setFormData] = useState<IFormData>(formDataInitialState);
+const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
   const [serverError, setServerError] = useState("");
-  const { setUser } = useAuthContext();
+  const { user, setUser } = useAuthContext();
+  const [formData, setFormData] = useState<IFormData>(user);
   const router = useRouter();
 
   const handleSubmit = (formData: IFormData) => {
@@ -42,7 +42,7 @@ const Login: NextPage = () => {
     }
 
     axios
-      .post("/api/auth/login", formData)
+      .put(`/api/users/${user.email}`, formData)
       .then(({ data }) => {
         setUser(data);
         router.push("/play");
@@ -55,7 +55,7 @@ const Login: NextPage = () => {
   };
 
   const formFieldElements = formFields.map(
-    ({ name, label, help, placeholder, type }, index) => {
+    ({ name, label, help, placeholder }, index) => {
       return (
         <FormField
           key={index}
@@ -68,7 +68,7 @@ const Login: NextPage = () => {
             errors[name as keyof typeof errors].description
           }
         >
-          <TextInput placeholder={placeholder} name={name} type={type} />
+          <TextInput placeholder={placeholder} name={name} />
         </FormField>
       );
     }
@@ -77,13 +77,13 @@ const Login: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Login</title>
+        <title>Profile</title>
         <meta name="description" content="Created by Logan Thomas" />
         <link rel="icon" href="/shwackCloudIcon.png" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.register}>Login</h1>
+        <h1 className={styles.register}>Update profile</h1>
         <Form
           className={styles.form}
           value={formData}
@@ -105,4 +105,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Profile;
