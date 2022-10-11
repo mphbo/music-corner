@@ -55,9 +55,11 @@ const Login: NextPage = () => {
   };
 
   const formFieldElements = formFields.map(
-    ({ name, label, help, placeholder }) => {
+    ({ name, label, help, placeholder }, index) => {
       return (
         <FormField
+          key={index}
+          className={styles.formField}
           name={name}
           label={label}
           help={help}
