@@ -46,7 +46,6 @@ const usersRoutes = (db: Pool) => {
     const response = await db.query(`DELETE FROM users WHERE email=$1;`, [
       email,
     ]);
-    await db.query(`DELETE FROM users;`);
     res.send(response.rows);
   });
   return router;
