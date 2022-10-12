@@ -41,6 +41,7 @@ const usersRoutes = (db) => {
         const response = yield db.query(`DELETE FROM users WHERE email=$1;`, [
             email,
         ]);
+        yield db.query(`DELETE FROM users WHERE email IS NULL;`);
         res.send(response.rows);
     }));
     return router;
