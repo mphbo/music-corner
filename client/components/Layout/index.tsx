@@ -27,7 +27,12 @@ function Layout({ children }: ILayout) {
         <Nav direction="row" width="full" background="brand" pad="medium">
           <Link href="/">
             <Anchor className={styles.icon}>
-              <Image width={24} height={24} src={ShwackCloudIcon} />
+              <Image
+                alt="ShwackCloud icon"
+                width={24}
+                height={24}
+                src={ShwackCloudIcon}
+              />
             </Anchor>
           </Link>
           <Link href="/play">

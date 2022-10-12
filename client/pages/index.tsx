@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <div className={styles.image}>
-          <Image src={shwackCloudImage} />
+          <Image alt="ShwackCloud logo" src={shwackCloudImage} />
         </div>
         {user ? (
           <>

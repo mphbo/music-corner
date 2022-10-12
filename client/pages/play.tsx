@@ -39,7 +39,7 @@ const Play: NextPage = () => {
 
       <main className={styles.main}>
         <div className={styles.image}>
-          <Image src={shwackCloudImage} />
+          <Image alt="ShwackCloud logo" src={shwackCloudImage} />
         </div>
         {users.length > 0 && <h1>Playlists</h1>}
         <div className={styles.gridContainer}>

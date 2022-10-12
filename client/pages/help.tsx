@@ -1,15 +1,10 @@
-import { Anchor, Box } from "grommet";
-import { Login, Play } from "grommet-icons";
+import { Box } from "grommet";
+import { Login } from "grommet-icons";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useAuthContext } from "../context/auth";
 import styles from "../styles/Help.module.scss";
-import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Help: NextPage = () => {
-  const { user } = useAuthContext();
   return (
     <div className={styles.container}>
       <Head>
@@ -31,8 +26,8 @@ const Help: NextPage = () => {
             <p>
               Pick your favourite playlist and put it in one place with everyone
               elses. While all functionality exists in SoundCloud already, the
-              difference is, these playlists won't be drowned out in all the
-              noise. Enjoy!
+              difference is, these playlists won&apos;t be drowned out in all
+              the noise. Enjoy!
             </p>
           </Box>
           <Box className={styles.section}>
@@ -43,8 +38,8 @@ const Help: NextPage = () => {
               login button at the top of this page or on the home page.
             </p>
             <p>
-              Then click the link at the bottom of the form that says "Don't
-              have an account? Register".
+              Then click the link at the bottom of the form that says
+              &quot;Don&apos;t have an account? Register&quot;.
             </p>
             <p>
               Fill in all fields. Pay special attention to the SoundCloudURL. To
@@ -53,16 +48,17 @@ const Help: NextPage = () => {
             <ol>
               <li>
                 Go to your created playlist on SoundCloud with the mobile
-                browser (Chrome, Safari, etc), or with your PC/Mac's browser.
+                browser (Chrome, Safari, etc), or with your PC/Mac&apos;s
+                browser.
               </li>
               <li>
                 Copy the URL/Website exactly as shown at the top of the browser
-                (do not click "Share" and use that URL).
+                (do not click &quot;Share&quot; and use that URL).
               </li>
               <li>
                 Paste this URL into the appropriate field during registration.
                 If you got this URL from the mobile browser on your phone or
-                tablet, please remove the 'm'. For example:
+                tablet, please remove the &apos;m&apos;. For example:
                 <p>
                   https://m.soundcloud.com/logan-norman-thomas/sets/electroswinging
                 </p>
@@ -99,8 +95,8 @@ const Help: NextPage = () => {
               login button at the top of this page or on the home page.
             </p>
             <p>
-              Then click the link at the bottom of the form that says "Don't
-              have an account? Register".
+              Then click the link at the bottom of the form that says
+              &quot;Don&apos;t have an account? Register&quot;.
             </p>
             <p>
               Fill in your correct email and password, if both are correct you
@@ -112,13 +108,13 @@ const Help: NextPage = () => {
             <p>
               Editing your profile is very similar to creating your account.
             </p>
-            <p>Log into your account if you haven't already.</p>
+            <p>Log into your account if you haven&apos;t already.</p>
             <p>
               Each of the fields in the form will be prepopulated with your
               current information (aside from password, changing password
               functionality is under construction). Change them however you wish
               (paying special attention to the SoundCloud URL as mentioned in
-              "Create account" above).
+              &quot;Create account&quot; above).
             </p>
             <p>
               Press submit, if the changes are successful you will be taken to
