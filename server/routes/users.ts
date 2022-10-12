@@ -43,14 +43,10 @@ const usersRoutes = (db: Pool) => {
     const { email } = req.params;
 
     // Delete user
-    const response = await db.query(`DELETE FROM users WHERE email=$1`, [
+    const response = await db.query(`DELETE FROM users WHERE email=$1;`, [
       email,
     ]);
     res.send(response.rows);
-
-    // Return all users that still exist
-    const users = await db.query("SELECT username, url FROM users");
-    res.send(users.rows);
   });
   return router;
 };

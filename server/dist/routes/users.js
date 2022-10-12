@@ -38,13 +38,10 @@ const usersRoutes = (db) => {
     router.delete("/:email", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email } = req.params;
         // Delete user
-        const response = yield db.query(`DELETE FROM users WHERE email=$1`, [
+        const response = yield db.query(`DELETE FROM users WHERE email=$1;`, [
             email,
         ]);
         res.send(response.rows);
-        // Return all users that still exist
-        const users = yield db.query("SELECT username, url FROM users");
-        res.send(users.rows);
     }));
     return router;
 };
