@@ -5,7 +5,7 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../context/auth";
 
-enum colors {
+export enum colors {
   primary = "#228BE6",
 }
 

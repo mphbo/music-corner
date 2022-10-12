@@ -3,25 +3,62 @@ import { Grid } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { SoundCloudWidget } from "../components/SoundCloudWidget";
-import styles from "../styles/Home.module.scss";
+import { motion } from "framer-motion";
+import styles from "../styles/Play.module.scss";
 import { IUser } from "../context/auth";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Play: NextPage = () => {
-  const [users, setUsers] = useState<IUser[] | []>([]);
+  const [users, setUsers] = useState<IUser[] | []>([
+    {
+      url: "https://soundcloud.com/logan-norman-thomas/sets/electroswinging",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+    {
+      url: "https://soundcloud.com/logan-norman-thomas/sets/old-tunes",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+    {
+      url: "https://soundcloud.com/hd4884/tracks",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+    {
+      url: "https://soundcloud.com/hd4884/tracks",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+    {
+      url: "https://soundcloud.com/hd4884/tracks",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+    {
+      url: "https://soundcloud.com/hd4884/tracks",
+      email: "test@test.com",
+      username: "Gregolas",
+    },
+  ]);
 
-  useEffect(() => {
-    axios.get("/api/users").then(({ data }) => {
-      setUsers(data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/api/users").then(({ data }) => {
+  //     setUsers(data);
+  //   });
+  // }, []);
 
   const players = users.map((user, index) => (
-    <div key={index}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.08 }}
+      key={index}
+    >
       <SoundCloudWidget {...user} />
-    </div>
+    </motion.div>
   ));
   return (
     <div className={styles.container}>
@@ -32,8 +69,15 @@ const Play: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Image src={shwackCloudImage} />
-        <Grid>{players}</Grid>
+        <div className={styles.image}>
+          <Image src={shwackCloudImage} />
+        </div>
+        <h1>Playlists</h1>
+        <div className={styles.gridContainer}>
+          <Grid fill columns="large" gap="medium">
+            {players}
+          </Grid>
+        </div>
       </main>
 
       <footer className={styles.footer}></footer>

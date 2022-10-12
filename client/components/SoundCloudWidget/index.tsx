@@ -1,9 +1,12 @@
 import React, { useState, useEffect, createRef, useRef } from "react";
 
 import loadscript from "load-script";
-import { Button } from "grommet";
-import { useAuthContext } from "../context/auth";
+import { Button, Card, CardBody, CardHeader } from "grommet";
+import { useAuthContext } from "../../context/auth";
 import axios from "axios";
+import { colors } from "../../pages/_app";
+import styles from "./styles/SoundCloudWidget.module.scss";
+import { Down, Up } from "grommet-icons";
 
 // SoundCloud widget API
 //  https://developers.soundcloud.com/docs/api/html5-widget
@@ -23,6 +26,7 @@ interface ISoundCloudWidget {
 export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
   // state
   const { user } = useAuthContext();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -122,27 +126,34 @@ export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
   };
 
   return (
-    <div>
-      <h4>{username}</h4>
-      {user?.email === "logannormanthomas@protonmail.com" && (
-        <Button label="Delete" onClick={handleDelete} />
-      )}
-      <iframe
-        ref={iframeRef}
-        id="sound-cloud-player"
-        style={{
-          border: "none",
-          height: 180,
-          width: "100%",
-        }}
-        scrolling="no"
-        allow="autoplay"
-        src={`https://w.soundcloud.com/player/?url=${url}&amp;;color=#0066CC;`}
-      ></iframe>
-
+    <Card border background={colors.primary}>
+      <CardHeader>
+        <h4 className={styles.username}>{username}</h4>
+        {user?.email === "logannormanthomas@protonmail.com" && (
+          <Button label="Delete" onClick={handleDelete} />
+        )}
+        <div style={{ marginRight: 20 }}>
+          {isExpanded ? (
+            <Up onClick={() => setIsExpanded(false)} />
+          ) : (
+            <Down onClick={() => setIsExpanded(true)} />
+          )}
+        </div>
+      </CardHeader>
+      <CardBody>
+        <iframe
+          ref={iframeRef}
+          id="sound-cloud-player"
+          className={styles.iFrame}
+          style={isExpanded ? { height: 500 } : {}}
+          scrolling="no"
+          allow="autoplay"
+          src={`https://w.soundcloud.com/player/?url=${url}&amp;;color=#0066CC;`}
+        ></iframe>
+      </CardBody>
       {/* <Button onClick={() => changePlaylistIndex(false)}>{"<"}</Button>
       <Button onClick={togglePlayback}>{isPlaying ? "Pause" : "Play"}</Button>
       <Button onClick={() => changePlaylistIndex(true)}>{">"}</Button> */}
-    </div>
+    </Card>
   );
 }
