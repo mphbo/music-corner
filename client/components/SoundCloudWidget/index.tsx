@@ -1,8 +1,15 @@
-import React, { useState, useEffect, createRef, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  createRef,
+  useRef,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 import loadscript from "load-script";
-import { Button, Card, CardBody, CardHeader } from "grommet";
-import { useAuthContext } from "../../context/auth";
+import { Button, Card, CardBody, CardFooter, CardHeader } from "grommet";
+import { IUser, useAuthContext } from "../../context/auth";
 import axios from "axios";
 import { colors } from "../../pages/_app";
 import styles from "./styles/SoundCloudWidget.module.scss";
@@ -21,9 +28,15 @@ interface ISoundCloudWidget {
   username: string;
   email: string;
   url: string;
+  setUsers: Dispatch<SetStateAction<IUser[]>>;
 }
 
-export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
+export function SoundCloudWidget({
+  url,
+  email,
+  username,
+  setUsers,
+}: ISoundCloudWidget) {
   // state
   const { user } = useAuthContext();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -122,16 +135,19 @@ export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
   };
 
   const handleDelete = () => {
-    axios.delete(`/users/:${email}`).then((response) => {});
+    axios
+      .delete(`/api/users/${email}`)
+      .then((response) => {
+        console.log("Delete Response:", response);
+        setUsers((prev) => prev.filter((user) => user.email !== email));
+      })
+      .catch((error) => console.log("Error deleting playlist:", error));
   };
 
   return (
-    <Card border background={colors.primary}>
+    <Card background={colors.primary}>
       <CardHeader>
         <h4 className={styles.username}>{username}</h4>
-        {user?.email === "logannormanthomas@protonmail.com" && (
-          <Button label="Delete" onClick={handleDelete} />
-        )}
         <div style={{ marginRight: 20 }}>
           {isExpanded ? (
             <Up onClick={() => setIsExpanded(false)} />
@@ -151,6 +167,11 @@ export function SoundCloudWidget({ url, email, username }: ISoundCloudWidget) {
           src={`https://w.soundcloud.com/player/?url=${url}&amp;;color=#0066CC;`}
         ></iframe>
       </CardBody>
+      <CardFooter pad="small">
+        {user?.email === "logannormanthomas@protonmail.com" && (
+          <Button label="Delete" onClick={handleDelete} />
+        )}
+      </CardFooter>
       {/* <Button onClick={() => changePlaylistIndex(false)}>{"<"}</Button>
       <Button onClick={togglePlayback}>{isPlaying ? "Pause" : "Play"}</Button>
       <Button onClick={() => changePlaylistIndex(true)}>{">"}</Button> */}

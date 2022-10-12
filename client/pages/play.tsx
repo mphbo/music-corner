@@ -11,44 +11,13 @@ import Image from "next/image";
 import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Play: NextPage = () => {
-  const [users, setUsers] = useState<IUser[] | []>([
-    {
-      url: "https://soundcloud.com/logan-norman-thomas/sets/electroswinging",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/logan-norman-thomas/sets/old-tunes",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/hd4884/tracks",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/hd4884/tracks",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/hd4884/tracks",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-    {
-      url: "https://soundcloud.com/hd4884/tracks",
-      email: "test@test.com",
-      username: "Gregolas",
-    },
-  ]);
+  const [users, setUsers] = useState<IUser[] | []>([]);
 
-  // useEffect(() => {
-  //   axios.get("/api/users").then(({ data }) => {
-  //     setUsers(data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios.get("/api/users").then(({ data }) => {
+      setUsers(data);
+    });
+  }, []);
 
   const players = users.map((user, index) => (
     <motion.div
@@ -57,7 +26,7 @@ const Play: NextPage = () => {
       transition={{ delay: 0.08 }}
       key={index}
     >
-      <SoundCloudWidget {...user} />
+      <SoundCloudWidget {...user} setUsers={setUsers} />
     </motion.div>
   ));
   return (
@@ -72,7 +41,7 @@ const Play: NextPage = () => {
         <div className={styles.image}>
           <Image src={shwackCloudImage} />
         </div>
-        <h1>Playlists</h1>
+        {users.length > 0 && <h1>Playlists</h1>}
         <div className={styles.gridContainer}>
           <Grid fill columns="large" gap="medium">
             {players}

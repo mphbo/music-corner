@@ -1,5 +1,5 @@
 import { Anchor } from "grommet";
-import { Login, Play } from "grommet-icons";
+import { Help, Login, Play } from "grommet-icons";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -56,6 +56,12 @@ const Home: NextPage = () => {
             </div>
           </>
         )}
+        <div className={styles.icon}>
+          <h1>Need some help getting going?</h1>
+          <Link href="/help">
+            <Anchor icon={<Help size="large" />} />
+          </Link>
+        </div>
       </main>
       <footer className={styles.footer}></footer>
     </div>

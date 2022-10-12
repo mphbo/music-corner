@@ -14,6 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     global: {
       colors: {
         brand: colors.primary,
+        text: {
+          dark: "#FFF",
+          light: colors.primary,
+        },
       },
       font: {
         family: "'M PLUS Rounded 1c', sans-serif",

@@ -94,7 +94,12 @@ const Profile: NextPage = () => {
           {formFieldElements}
           <Box className={styles.buttonGroup} direction="row" gap="medium">
             <Button type="submit" primary label="Submit" />
-            <Button type="reset" secondary label="Reset" />
+            <Button
+              type="reset"
+              secondary
+              label="Reset"
+              className={styles.button}
+            />
           </Box>
         </Form>
         <Link href="/registration">
