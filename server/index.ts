@@ -33,11 +33,10 @@ app.get("/", (req, res) => {
   res.send("Hi");
 });
 app.delete("/users/", async (req, res) => {
-    // Delete user
-    const response = await pgClient.query(`DELETE FROM users WHERE email=;`);
-    res.send(response.rows);
-  });
-)
+  // Delete user
+  const response = await pgClient.query(`DELETE FROM users WHERE email=;`);
+  res.send(response.rows);
+});
 
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
