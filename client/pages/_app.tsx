@@ -4,6 +4,7 @@ import { Grommet } from "grommet";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../context/auth";
+import Head from "next/head";
 
 export enum colors {
   primary = "#228BE6",
@@ -43,6 +44,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Grommet theme={theme}>
       <AuthProvider>
         <Layout>
+          <Head>
+            <meta name="description" content="Created by Logan Thomas" />
+            <link rel="icon" href="/shwackCloudIcon.png" />
+          </Head>
           <Component {...pageProps} setTheme={setTheme} />
         </Layout>
       </AuthProvider>

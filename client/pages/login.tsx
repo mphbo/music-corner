@@ -78,8 +78,6 @@ const Login: NextPage = () => {
     <div>
       <Head>
         <title>Login</title>
-        <meta name="description" content="Created by Logan Thomas" />
-        <link rel="icon" href="/shwackCloudIcon.png" />
       </Head>
 
       <main className={styles.main}>

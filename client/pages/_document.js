@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="en">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -10,12 +10,10 @@ export default function Document() {
           href="https://fonts.gstatic.com"
           crossOrigin="true"
         />
-
         <link
           href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap"
           rel="stylesheet"
         />
-
         <link
           href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&display=swap"
           rel="stylesheet"
