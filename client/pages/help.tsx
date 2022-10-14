@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { Login } from "grommet-icons";
+import { Login, User } from "grommet-icons";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Help.module.scss";
@@ -108,11 +108,15 @@ const Help: NextPage = () => {
             </p>
             <p>Log into your account if you haven&apos;t already.</p>
             <p>
-              Each of the fields in the form will be prepopulated with your
-              current information (aside from password, changing password
-              functionality is under construction). Change them however you wish
-              (paying special attention to the SoundCloud URL as mentioned in
-              &quot;Create account&quot; above).
+              Then click <User /> profile button at the top of this page, or on
+              the home page.
+            </p>
+            <p>
+              On the profile page, each of the fields in the form will be
+              prepopulated with your current information (aside from password,
+              changing password functionality is under construction). Change
+              them however you wish (paying special attention to the SoundCloud
+              URL as mentioned in &quot;Create account&quot; above).
             </p>
             <p>
               Press submit, if the changes are successful you will be taken to
