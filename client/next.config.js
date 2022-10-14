@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  exports: {
-    trailingSlash: true,
+  experimental: {
+    outputStandalone: true,
   },
 };
 
