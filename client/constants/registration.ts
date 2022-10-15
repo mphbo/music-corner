@@ -43,7 +43,7 @@ export const formFields = [
     label: "Email",
     placeholder: "Please enter your email",
     help: "",
-    type: "text",
+    type: "email",
   },
   {
     name: "url",

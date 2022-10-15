@@ -1,4 +1,4 @@
-import { Box, Button, Form, FormField, TextInput } from "grommet";
+import { Box, Button, Form, FormField, Notification, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -43,12 +43,20 @@ const Login: NextPage = () => {
 
     axios
       .post("/api/auth/login", formData)
-      .then(({ data }) => {
-        setUser(data);
+      .then(({ data: { result } }) => {
+        setUser(result);
         router.push("/play");
       })
-      .catch(({ response: { data } }) => setServerError(data));
+      .catch(
+        ({
+          response: {
+            data: { message },
+          },
+        }) => setServerError(message)
+      );
   };
+
+  console.log(serverError);
 
   const handleResetFormData = () => {
     setFormData(formDataInitialState);
@@ -63,6 +71,7 @@ const Login: NextPage = () => {
           name={name}
           label={label}
           help={help}
+          type={type}
           error={
             errors[name as keyof typeof errors].isError &&
             errors[name as keyof typeof errors].description
@@ -81,6 +90,16 @@ const Login: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        {serverError && (
+          <Notification
+            toast
+            title="Error"
+            message={serverError}
+            onClose={() => {
+              setServerError("");
+            }}
+          />
+        )}
         <h1 className={styles.register}>Login</h1>
         <Form
           className={styles.form}

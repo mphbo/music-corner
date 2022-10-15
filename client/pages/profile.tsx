@@ -1,8 +1,8 @@
-import { Box, Button, Form, FormField, TextInput } from "grommet";
+import { Box, Button, Form, FormField, Notification, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Registration.module.scss";
 import axios from "axios";
 import { useAuthContext } from "../context/auth";
@@ -20,6 +20,10 @@ const Profile: NextPage = () => {
   const { user, setUser } = useAuthContext();
   const [formData, setFormData] = useState<IFormData>(user);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user]);
 
   const handleSubmit = (formData: IFormData) => {
     setErrors(errorsInitialState);
@@ -43,11 +47,17 @@ const Profile: NextPage = () => {
 
     axios
       .put(`/api/users/${user.email}`, formData)
-      .then(({ data }) => {
-        setUser(data);
+      .then(({ data: { result } }) => {
+        setUser(result);
         router.push("/play");
       })
-      .catch(({ response: { data } }) => setServerError(data));
+      .catch(
+        ({
+          response: {
+            data: { message },
+          },
+        }) => setServerError(message)
+      );
   };
 
   const handleResetFormData = () => {
@@ -55,7 +65,7 @@ const Profile: NextPage = () => {
   };
 
   const formFieldElements = formFields.map(
-    ({ name, label, help, placeholder }, index) => {
+    ({ name, label, help, placeholder, type }, index) => {
       return (
         <FormField
           key={index}
@@ -63,6 +73,7 @@ const Profile: NextPage = () => {
           name={name}
           label={label}
           help={help}
+          type={type}
           error={
             errors[name as keyof typeof errors].isError &&
             errors[name as keyof typeof errors].description
@@ -74,6 +85,11 @@ const Profile: NextPage = () => {
     }
   );
 
+  const disabled =
+    user?.username === formData?.username &&
+    user?.email === formData?.email &&
+    user?.url === formData?.url;
+
   return (
     <div>
       <Head>
@@ -81,6 +97,17 @@ const Profile: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        {serverError && (
+          <Notification
+            toast
+            title="Error"
+            message={serverError}
+            onClose={() => {
+              setServerError("");
+            }}
+          />
+        )}
+
         <h1 className={styles.register}>Update profile</h1>
         <Form
           className={styles.form}
@@ -91,7 +118,7 @@ const Profile: NextPage = () => {
         >
           {formFieldElements}
           <Box className={styles.buttonGroup} direction="row" gap="medium">
-            <Button type="submit" primary label="Submit" />
+            <Button disabled={disabled} type="submit" primary label="Submit" />
             <Button
               type="reset"
               secondary
@@ -100,9 +127,6 @@ const Profile: NextPage = () => {
             />
           </Box>
         </Form>
-        <Link href="/registration">
-          <p className={styles.account}>Don&apos;t have an account? Register</p>
-        </Link>
       </main>
     </div>
   );

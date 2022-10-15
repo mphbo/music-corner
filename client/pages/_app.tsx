@@ -38,6 +38,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         light: "white",
       },
     },
+    notification: {
+      container: {
+        background: {
+          color: colors.primary,
+        },
+      },
+    },
   });
 
   return (

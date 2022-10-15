@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { Pool } from "pg";
+import { formatResponse } from "../helpers/formatResponse";
 const router = express.Router();
 
 const authRoutes = (db: Pool) => {
@@ -16,8 +17,12 @@ const authRoutes = (db: Pool) => {
 
     if (user) {
       return user.email === email
-        ? res.status(403).send("Email already exists")
-        : res.status(403).send("Username already exists");
+        ? res
+            .status(403)
+            .json(formatResponse("", false, "Email already exists"))
+        : res
+            .status(403)
+            .json(formatResponse("", false, "Username already exists"));
     }
 
     await bcrypt.genSalt(10, (err, salt) => {
@@ -26,9 +31,12 @@ const authRoutes = (db: Pool) => {
           "INSERT INTO users (username, email, url, passwordhash) VALUES($1, $2, $3, $4)",
           [username, email, url, passwordhash]
         );
-        if (!err) res.status(200).send({ username, email, url });
+        if (!err)
+          res.status(200).json(formatResponse({ username, email, url }));
         else {
-          res.status(500).send("Error creating account.");
+          res
+            .status(500)
+            .json(formatResponse("", false, "Error creating account."));
         }
       });
     });
@@ -40,7 +48,7 @@ const authRoutes = (db: Pool) => {
       await db.query(`SELECT * FROM users WHERE email=$1`, [email])
     ).rows;
     if (users.length === 0) {
-      res.status(403).send("Email does not exist.");
+      res.status(403).json(formatResponse("", false, "Email does not exist."));
       return;
     }
 
@@ -49,10 +57,16 @@ const authRoutes = (db: Pool) => {
 
     await bcrypt.compare(password, user.passwordhash, (err, result) => {
       err
-        ? res.status(500).send("Error decrypting password.")
+        ? res
+            .status(500)
+            .json(formatResponse("", false, "Error decrypting password."))
         : result === false
-        ? res.status(401).send("Incorrect email/password combination.")
-        : res.status(200).send({ email, username, url });
+        ? res
+            .status(401)
+            .json(
+              formatResponse("", false, "Incorrect email/password combination.")
+            )
+        : res.status(200).json(formatResponse({ email, username, url }));
     });
   });
   return router;
