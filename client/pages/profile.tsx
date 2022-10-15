@@ -54,18 +54,6 @@ const Profile: NextPage = () => {
     setFormData(formDataInitialState);
   };
 
-  axios
-    .put(`/api/users/nicholec31@gmail.com`, {
-      url: "https://soundcloud.com/cholec31/sets/itsa-party-itsa-party",
-      username: "choleo31",
-      email: "nicholec31@gmail.com",
-    })
-    .then(({ data }) => {
-      setUser(data);
-      router.push("/play");
-    })
-    .catch(({ response: { data } }) => setServerError(data));
-
   const formFieldElements = formFields.map(
     ({ name, label, help, placeholder }, index) => {
       return (
