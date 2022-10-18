@@ -20,23 +20,23 @@ and widget in a progressive web application, built with a mobile first design bu
 
 ### Home/Landing page.
 
-!["Screenshot of MAIN view"](https://github.com/mphbo/music-corner/blob/development/public/docs/1.png)
+!["Screenshot of MAIN view"](https://github.com/mphbo/music-corner/blob/master/public/docs/1.png)
 
 ### Beginning of Playlists section.
 
-!["Screenshot of HEADING for Web Projects"](https://github.com/mphbo/music-corner/blob/development/public/docs/2.png)
+!["Screenshot of HEADING for Web Projects"](https://github.com/mphbo/music-corner/blob/master/public/docs/2.png)
 
 ### Example of expanded playlist.
 
-!["Screenshot the Project component"](https://github.com/mphbo/music-corner/blob/development/public/docs/3.png)
+!["Screenshot the Project component"](https://github.com/mphbo/music-corner/blob/master/public/docs/3.png)
 
 ### Login page.
 
-!["Screenshot of Project Modal component"](https://github.com/mphbo/music-corner/blob/development/public/docs/4.png)
+!["Screenshot of Project Modal component"](https://github.com/mphbo/music-corner/blob/master/public/docs/4.png)
 
 ### Beginning of help section which helps users troubleshoot.
 
-!["Screenshot of Project Modal component"](https://github.com/mphbo/music-corner/blob/development/public/docs/5.png)
+!["Screenshot of Project Modal component"](https://github.com/mphbo/music-corner/blob/master/public/docs/5.png)
 
 ## SETUP and RUN with DOCKER for development
 
