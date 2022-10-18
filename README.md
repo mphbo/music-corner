@@ -12,7 +12,7 @@ and widget in a progressive web application, built with a mobile first design bu
 ## Tech Stack
 
 - Front End: React, NextJS
-- Back End: Express
+- Back End: Express, PostgreSQL
 - Component Libraries: Grommet, Framer Motion (Animation)
 - CSS Preprocessor: Sass
 - Deployment: NextJS client and Express server are both containerized with docker, routing is handled by Nginx (also containerized) and all are deployed to AWS Elastic Beanstalk with CircleCI for continuous deployment and integration.
