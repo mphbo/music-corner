@@ -21,8 +21,6 @@ and widget in a progressive web application, built with a mobile first design bu
 
 ### Home/Landing page.
 
-https://github.com/mphbo/music-corner/blob/master/client/public/docs/1.png?raw=true
-
 !["Screenshot of MAIN view"](https://github.com/mphbo/music-corner/blob/master/client/public/docs/1.png)
 
 ### Beginning of Playlists section.
