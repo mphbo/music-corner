@@ -7,6 +7,7 @@ and widget in a progressive web application, built with a mobile first design bu
 
 - Ability to make your own account, at which point you add the URL to the playlist you want to share with other users on the site.
 - Ability to change your profile as well as the associated playlist.
+- Able to view others playlists and see any and all updates on each visit.
 
 ## Tech Stack
 
