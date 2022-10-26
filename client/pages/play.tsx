@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Grid } from "grommet";
+import { Grid, Notification } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { SoundCloudWidget } from "../components/SoundCloudWidget";
@@ -12,11 +12,16 @@ import shwackCloudImage from "../public/ShwackCloud.png";
 
 const Play: NextPage = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
+  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
-    axios.get("/api/users").then(({ data }) => {
-      setUsers(data);
-    });
+    axios
+      .get("/api/users")
+      .then(({ data: { result } }) => {
+        console.log(result);
+        setUsers(result);
+      })
+      .catch(({ response: { data } }) => setServerError(data));
   }, []);
 
   const players = users.map((user, index) => (
@@ -34,8 +39,18 @@ const Play: NextPage = () => {
       <Head>
         <title>Play</title>
       </Head>
-
       <main className={styles.main}>
+        {serverError && (
+          <Notification
+            toast
+            title="Error"
+            message={serverError}
+            onClose={() => {
+              setServerError("");
+            }}
+          />
+        )}
+
         <div className={styles.image}>
           <Image alt="ShwackCloud logo" src={shwackCloudImage} />
         </div>

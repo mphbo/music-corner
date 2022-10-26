@@ -25,17 +25,20 @@ export const formFields = [
     label: "Username",
     placeholder: "Please enter your new username",
     help: "",
+    type: "text",
   },
   {
     name: "email",
     label: "Email",
     placeholder: "Please enter your new email",
     help: "",
+    type: "email",
   },
   {
     name: "url",
     label: "SoundCloud Playlist URL",
     placeholder: "Please enter your playlist URL",
     help: "Please fill in the URL of your playlist directly from SoundCloud in the browser (Chrome, Safari, etc) NOT from the SoundCloud app, if using a mobile browser remove the m from the URL, for example: 'https://m.soundcloud.com/xyz becomes https://soundcloud.com/xyz'. YOU CANNOT USE THE SHARE LINK BUTTON.",
+    type: "text",
   },
 ];

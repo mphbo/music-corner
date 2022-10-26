@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Box, Button, Form, FormField, TextInput } from "grommet";
+import { Box, Button, Form, FormField, Notification, TextInput } from "grommet";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -54,11 +54,17 @@ const Registration: NextPage = () => {
 
     axios
       .post("/api/auth/register", formData)
-      .then(({ data }) => {
-        setUser(data);
+      .then(({ data: { result } }) => {
+        setUser(result);
         router.push("/play");
       })
-      .catch(({ response: { data } }) => setServerError(data));
+      .catch(
+        ({
+          response: {
+            data: { message },
+          },
+        }) => setServerError(message)
+      );
   };
 
   const handleResetFormData = () => {
@@ -92,6 +98,16 @@ const Registration: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        {serverError && (
+          <Notification
+            toast
+            title="Error"
+            message={serverError}
+            onClose={() => {
+              setServerError("");
+            }}
+          />
+        )}
         <h1 className={styles.register}>Register</h1>
         <Form
           className={styles.form}

@@ -31,9 +31,9 @@ const Help: NextPage = () => {
           <Box className={styles.section}>
             <h1>Creating account:</h1>
             <p>
-              Click
-              <Login className={styles.login} size="medium" />
-              login button at the top of this page or on the home page.
+              Click the login button{" "}
+              <Login className={styles.login} size="medium" /> at the top of
+              this page or on the home page.
             </p>
             <p>
               Then click the link at the bottom of the form that says
@@ -88,9 +88,9 @@ const Help: NextPage = () => {
           <Box>
             <h1>Logging in:</h1>
             <p>
-              Click
+              Click the login button{" "}
               <Login className={styles.login} size="medium" />
-              login button at the top of this page or on the home page.
+              at the top of this page or on the home page.
             </p>
             <p>
               Then click the link at the bottom of the form that says
@@ -108,8 +108,8 @@ const Help: NextPage = () => {
             </p>
             <p>Log into your account if you haven&apos;t already.</p>
             <p>
-              Then click <User /> profile button at the top of this page, or on
-              the home page.
+              Then click the profile button <User /> at the top of this page, or
+              on the home page.
             </p>
             <p>
               On the profile page, each of the fields in the form will be
