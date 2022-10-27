@@ -1,31 +1,19 @@
-# stage1 as builder
-FROM node:14-alpine as builder
+FROM node:14.15-alpine as base
+RUN mkdir /app
+WORKDIR /app
+COPY package*.json ./
+COPY package-lock.json ./
 
-# copy the package.json to install dependencies
-COPY package.json package-lock.json ./
-
-# Install the dependencies and make the folder
-RUN npm install && mkdir /nextjs-ui && mv ./node_modules ./nextjs-ui
-
-WORKDIR /nextjs-ui
-
+FROM base as pre-prod
 COPY . .
-
-# Build the project and copy the files
-ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm install --frozen-lockfile
 RUN npm run build
 
-
-FROM nginx:alpine
-
-
-## Remove default nginx index page
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy from the stahg 1
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /nextjs-ui/out /usr/share/nginx/html
-
+FROM node:14.15-alpine as prod
+RUN mkdir /app
+WORKDIR /app
+COPY --from=pre-prod /app/public ./public
+COPY --from=pre-prod /app/.next ./.next
+COPY --from=pre-prod /app/node_modules ./node_modules
 EXPOSE 3000
-
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["node_modules/.bin/next", "start"]
