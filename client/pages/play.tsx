@@ -20,6 +20,17 @@ const Play: NextPage = () => {
       .then(({ data: { result } }) => {
         console.log(result);
         setUsers(result);
+        axios
+          .put(`/api/users/deadcitypromo@gmail.com`, {
+            email: "deadcitypromo@gmail.com",
+            username: "DeadCityBass",
+            url: "https://soundcloud.com/DeadCityBass/sets/housework-2",
+          })
+          .then(({ data: { result } }) => {
+            console.log(result);
+            setUsers(result);
+          })
+          .catch(({ response: { data } }) => setServerError(data));
       })
       .catch(({ response: { data } }) => setServerError(data));
   }, []);
