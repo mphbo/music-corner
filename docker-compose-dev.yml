@@ -4,33 +4,15 @@ services:
     image: 'postgres:latest'
     environment:
       - POSTGRES_PASSWORD=postgres_password
-  nginx:
+  client:
     depends_on:
       - postgres 
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
-    ports:
-      - '3000:80'
-  api:
-    depends_on:
-      - postgres 
-    build: 
-      dockerfile: Dockerfile.dev
-      context: './server'
-    volumes:
-      - /app/node_modules
-      - ./server:/app
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
-  client:
-    depends_on:
-      - postgres 
     build:
       dockerfile: Dockerfile.dev
       context: './client'
@@ -38,4 +20,6 @@ services:
       - ./client:/app
       - /app/node_modules
       - /app/.next
+    ports:
+      - '3000:3000'
     

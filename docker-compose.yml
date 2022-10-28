@@ -4,19 +4,5 @@ services:
     image: "mphbo777/music-corner-client"
     mem_limit: 128m
     hostname: client
-  server:
-    image: mphbo777/music-corner-server
-    mem_limit: 128m
-    hostname: api
-    environment:
-      - PGUSER=postgres
-      - PGHOST=music-corner.czpypn2yfhyx.us-east-1.rds.amazonaws.com
-      - PGDATABASE=users
-      - PGPASSWORD=postgrespassword
-      - PGPORT=5432
-  nginx:
-    image: "mphbo777/music-corner-nginx"
-    mem_limit: 128m
-    hostname: nginx
     ports:
-      - '80:80'
+      - '80:3000'
