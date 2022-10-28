@@ -14,5 +14,6 @@ db.on("connect", (client) => {
     .query(
       "CREATE TABLE IF NOT EXISTS users (username varchar(255), email varchar(255), url varchar(255), passwordhash varchar(255))"
     )
+
     .catch((error) => console.error(error));
 });
