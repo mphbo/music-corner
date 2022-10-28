@@ -6,7 +6,7 @@ export const db = new Pool({
   host: keys.pgHost,
   database: keys.pgDatabase,
   password: keys.pgPassword,
-  port: keys.pgPort,
+  port: Number(keys.pgPort),
 });
 
 db.on("connect", (client) => {

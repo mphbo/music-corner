@@ -10,5 +10,5 @@ export default <IKeys>{
   pgHost: process.env.PGHOST,
   pgDatabase: process.env.PGDATABASE,
   pgPassword: process.env.PGPASSWORD,
-  pgPort: +process.env.PGHOST,
+  pgPort: process.env.PGHOST,
 };
