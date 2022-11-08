@@ -14,7 +14,7 @@ const Play: NextPage = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
   const [serverError, setServerError] = useState("");
 
-  console.log(process.env);
+  console.log(process.env.PGHOST);
 
   useEffect(() => {
     axios
