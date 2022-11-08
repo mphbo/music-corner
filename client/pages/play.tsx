@@ -14,6 +14,8 @@ const Play: NextPage = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
   const [serverError, setServerError] = useState("");
 
+  console.log(process.env);
+
   useEffect(() => {
     axios
       .get("/api/users")
