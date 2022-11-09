@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "../styles/Registration.module.scss";
 import axios from "axios";
-import { useAuthContext } from "../context/auth";
 import { useRouter } from "next/router";
 import { IErrors, IFormData } from "../types/profile";
 import {
@@ -13,17 +12,35 @@ import {
   formDataInitialState,
   formFields,
 } from "../constants/profile";
+import { useSession } from "next-auth/client";
 
 const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
   const [serverError, setServerError] = useState("");
-  const { user, setUser } = useAuthContext();
+  const [session, loading] = useSession();
+  const [user, setUser] = useState({
+    email: "",
+    username: "",
+    url: "",
+  });
   const [formData, setFormData] = useState<IFormData>(user);
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) router.push("/login");
-  }, [user]);
+    if (!session && !loading) router.push("/login");
+  }, [session, loading]);
+
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session?.email}`).then((result) => {
+        console.log("resultFromGetUser:", result);
+        console.log("email:", session?.email);
+        setUser(result.data);
+      });
+    }
+  }, [session]);
+
+  console.log("session:", session);
 
   const handleSubmit = (formData: IFormData) => {
     setErrors(errorsInitialState);
@@ -46,7 +63,7 @@ const Profile: NextPage = () => {
     }
 
     axios
-      .put(`/api/users/${user.email}`, formData)
+      .put(`/api/users/${session?.email}`, formData)
       .then(({ data: { result } }) => {
         setUser(result);
         router.push("/play");

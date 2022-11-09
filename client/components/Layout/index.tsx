@@ -7,18 +7,22 @@ import React from "react";
 import { useAuthContext } from "../../context/auth";
 import ShwackCloudIcon from "../../public/ShwackCloudIcon.png";
 import styles from "./styles/Layout.module.scss";
+import { useSession, signOut } from "next-auth/client";
 
 interface ILayout {
   children: any;
 }
 
 function Layout({ children }: ILayout) {
+  const [session, loading] = useSession();
+  console.log(session, loading);
   const { user, setUser } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = () => {
-    setUser(null);
-    router.push("/login");
+    // setUser(null);
+    // router.push("/login");
+    signOut();
   };
 
   return (
@@ -38,14 +42,14 @@ function Layout({ children }: ILayout) {
           <Link href="/play">
             <Anchor icon={<Play color="white" />} />
           </Link>
-          {user ? (
+          {session ? (
             <Anchor icon={<Logout color="white" />} onClick={handleLogout} />
           ) : (
             <Link href="/login">
               <Anchor icon={<Login color="white" />} />
             </Link>
           )}
-          {user && (
+          {session && !loading && (
             <Link href="/profile">
               <Anchor icon={<User color="white" />} />
             </Link>

@@ -9,11 +9,12 @@ import React, {
 
 import loadscript from "load-script";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "grommet";
-import { IUser, useAuthContext } from "../../context/auth";
+import { IUser } from "../../context/auth";
 import axios from "axios";
 import { colors } from "../../pages/_app";
 import styles from "./styles/SoundCloudWidget.module.scss";
 import { Down, Up } from "grommet-icons";
+import { useSession } from "next-auth/client";
 
 // SoundCloud widget API
 //  https://developers.soundcloud.com/docs/api/html5-widget
@@ -38,7 +39,7 @@ export function SoundCloudWidget({
   setUsers,
 }: ISoundCloudWidget) {
   // state
-  const { user } = useAuthContext();
+  const [session, loading] = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
 
   // used to communicate between SC widget and React
@@ -168,7 +169,7 @@ export function SoundCloudWidget({
         ></iframe>
       </CardBody>
       <CardFooter pad="small">
-        {user?.email === "logannormanthomas@protonmail.com" && (
+        {session?.email === "logannormanthomas@protonmail.com" && (
           <Button label="Delete" onClick={handleDelete} />
         )}
       </CardFooter>
