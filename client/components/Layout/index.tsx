@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAuthContext } from "../../context/auth";
 import ShwackCloudIcon from "../../public/ShwackCloudIcon.png";
 import styles from "./styles/Layout.module.scss";
 import { useSession, signOut } from "next-auth/client";
@@ -15,14 +14,11 @@ interface ILayout {
 
 function Layout({ children }: ILayout) {
   const [session, loading] = useSession();
-  console.log(session, loading);
-  const { user, setUser } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = () => {
-    // setUser(null);
-    // router.push("/login");
     signOut();
+    router.push("/login");
   };
 
   return (

@@ -54,8 +54,6 @@ const Login: NextPage = () => {
     });
   };
 
-  console.log(serverError);
-
   const handleResetFormData = () => {
     setFormData(formDataInitialState);
   };

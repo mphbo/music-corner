@@ -10,7 +10,6 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials: { email: string; password: string }) {
-        console.log(credentials);
         const { email, password } = credentials;
         const user = (
           await db.query(`SELECT * FROM users WHERE email=$1`, [email])

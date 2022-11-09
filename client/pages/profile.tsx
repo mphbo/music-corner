@@ -32,15 +32,13 @@ const Profile: NextPage = () => {
 
   useEffect(() => {
     if (session) {
-      axios.get(`/api/users/${session?.email}`).then((result) => {
-        console.log("resultFromGetUser:", result);
-        console.log("email:", session?.email);
-        setUser(result.data);
-      });
+      axios
+        .get(`/api/users/${session?.user?.email}`)
+        .then(({ data: { result } }) => {
+          setFormData(result);
+        });
     }
   }, [session]);
-
-  console.log("session:", session);
 
   const handleSubmit = (formData: IFormData) => {
     setErrors(errorsInitialState);

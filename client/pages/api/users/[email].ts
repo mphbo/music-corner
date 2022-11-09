@@ -11,10 +11,8 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { email } = req.query;
-    console.log("email =====>", email);
     const user = (await db.query(`SELECT * FROM users WHERE email=$1`, [email]))
       .rows[0];
-    console.log("user =====>", user);
     res.json({ result: user, isSuccess: true });
   }
   if (req.method === "PUT") {

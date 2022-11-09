@@ -139,7 +139,6 @@ export function SoundCloudWidget({
     axios
       .delete(`/api/users/${email}`)
       .then(({ data: { result } }) => {
-        console.log("Delete Response:", result);
         setUsers((prev) => prev.filter((user) => user.email !== email));
       })
       .catch((error) => console.log("Error deleting playlist:", error));

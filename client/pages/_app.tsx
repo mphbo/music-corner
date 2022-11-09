@@ -5,12 +5,13 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../context/auth";
 import Head from "next/head";
+import { Provider } from "next-auth/client";
 
 export enum colors {
   primary = "#228BE6",
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: any) {
   const [theme, setTheme] = useState({
     global: {
       colors: {
@@ -50,13 +51,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Grommet theme={theme}>
       <AuthProvider>
-        <Layout>
-          <Head>
-            <meta name="description" content="Created by Logan Thomas" />
-            <link rel="icon" href="/shwackCloudIcon.png" />
-          </Head>
-          <Component {...pageProps} setTheme={setTheme} />
-        </Layout>
+        <Provider session={pageProps.session}>
+          <Layout>
+            <Head>
+              <meta name="description" content="Created by Logan Thomas" />
+              <link rel="icon" href="/shwackCloudIcon.png" />
+            </Head>
+            <Component {...pageProps} setTheme={setTheme} />
+          </Layout>
+        </Provider>
       </AuthProvider>
     </Grommet>
   );

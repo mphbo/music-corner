@@ -6,7 +6,6 @@ interface IKeys {
   pgPort: number | undefined;
 }
 
-console.log(process.env.PGHOST);
 export default <IKeys>{
   pgUser: process.env.PGUSER,
   pgHost: process.env.PGHOST,

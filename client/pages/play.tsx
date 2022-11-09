@@ -14,13 +14,10 @@ const Play: NextPage = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
   const [serverError, setServerError] = useState("");
 
-  console.log(process.env.PGHOST);
-
   useEffect(() => {
     axios
       .get("/api/users")
       .then(({ data: { result } }) => {
-        console.log(result);
         setUsers(result);
       })
       .catch(({ response: { data } }) => setServerError(data));
