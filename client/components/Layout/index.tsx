@@ -1,5 +1,5 @@
 import { Anchor, Header, Nav } from "grommet";
-import { Help, Home, Login, Logout, Play, User } from "grommet-icons";
+import { Chat, Help, Home, Login, Logout, Play, User } from "grommet-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -46,9 +46,14 @@ function Layout({ children }: ILayout) {
             </Link>
           )}
           {session && !loading && (
-            <Link href="/profile">
-              <Anchor icon={<User color="white" />} />
-            </Link>
+            <>
+              <Link href="/profile">
+                <Anchor icon={<User color="white" />} />
+              </Link>
+              <Link href="/chat">
+                <Anchor icon={<Chat color="white" />} />
+              </Link>
+            </>
           )}
           <Link href="/help">
             <Anchor icon={<Help color="white" />} />

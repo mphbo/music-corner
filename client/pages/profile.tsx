@@ -61,7 +61,7 @@ const Profile: NextPage = () => {
     }
 
     axios
-      .put(`/api/users/${session?.email}`, formData)
+      .put(`/api/users/${session?.user?.email}`, formData)
       .then(({ data: { result } }) => {
         setUser(result);
         router.push("/play");

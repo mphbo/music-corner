@@ -39,7 +39,9 @@ export default async function handler(
     }
 
     if (
-      users.find((user) => user.email !== userEmail && user.email === email)
+      users.find((user) => {
+        return user.email !== userEmail && user.email === email;
+      })
     ) {
       return res.status(403).json({
         result: null,
