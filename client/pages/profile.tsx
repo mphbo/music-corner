@@ -13,6 +13,8 @@ import {
   formFields,
 } from "../constants/profile";
 import { useSession } from "next-auth/client";
+import CloudinaryUploadWidget from "../components/CloudinaryUploadWidget";
+import { ImageUpload } from "../components/CustomCloudinaryUploadWidget/components/ImageUpload";
 
 const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
@@ -36,6 +38,9 @@ const Profile: NextPage = () => {
         .get(`/api/users/${session?.user?.email}`)
         .then(({ data: { result } }) => {
           setFormData(result);
+          if (result) {
+            setUser(result);
+          }
         });
     }
   }, [session]);
@@ -64,6 +69,7 @@ const Profile: NextPage = () => {
       .put(`/api/users/${session?.user?.email}`, formData)
       .then(({ data: { result } }) => {
         setUser(result);
+        setFormData(result);
         router.push("/play");
       })
       .catch(
@@ -124,6 +130,7 @@ const Profile: NextPage = () => {
         )}
 
         <h1 className={styles.register}>Update profile</h1>
+        <ImageUpload email={user.email} />
         <Form
           className={styles.form}
           value={formData}

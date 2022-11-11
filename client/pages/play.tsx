@@ -30,7 +30,7 @@ const Play: NextPage = () => {
       transition={{ delay: 0.08 }}
       key={index}
     >
-      <SoundCloudWidget {...user} setUsers={setUsers} />
+      {/* <SoundCloudWidget {...user} setUsers={setUsers} /> */}
     </motion.div>
   ));
   return (
