@@ -2,15 +2,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import { ServiceResponse } from "../../../types/service-response";
 import { User } from "../../../types/User";
+import { Messages } from "../../../types/messages";
 import { db } from "../../../utils/dbConnect";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ServiceResponse<User[] | null>>
+  res: NextApiResponse<ServiceResponse<Message[] | null>>
 ) {
   if (req.method === "GET") {
-    const users: User[] = (await db.query("SELECT * FROM users")).rows;
+    const messages: Message[] = (await db.query("SELECT * FROM messages")).rows;
 
-    res.json({ result: users, isSuccess: true });
+    res.json({ result: messages, isSuccess: true });
   }
 }

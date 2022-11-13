@@ -12,12 +12,15 @@ export const db = new Pool({
 db.on("connect", (client) => {
   client
     .query(
-      "CREATE TABLE IF NOT EXISTS users (username varchar(255), email varchar(255), url varchar(255), passwordhash varchar(255))"
+      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username VARCHAR(255), email VARCHAR(255), url VARCHAR(255), passwordhash VARCHAR(255))"
     )
     .catch((error) => console.error(error));
   client
+    .query("DROP TABLE IF EXISTS messages")
+    .catch((error) => console.error(error));
+  client
     .query(
-      "CREATE TABLE IF NOT EXISTS messages (sender varchar(255), receiver varchar(255), content text)"
+      "CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, sender INT, receiver INT, content TEXT, CONSTRAINT fk_sender FOREIGN KEY(sender) REFERENCES users(id) ON DELETE CASCADE, CONSTRAINT fk_receiver FOREIGN KEY(receiver) REFERENCES users(id) ON DELETE CASCADE)"
     )
     .catch((error) => console.error(error));
 });

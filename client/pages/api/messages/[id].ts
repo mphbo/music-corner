@@ -9,26 +9,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ServiceResponse<User | null>>
 ) {
+  const { id } = req.query;
   if (req.method === "GET") {
-    const { email } = req.query;
-    const user = (await db.query(`SELECT * FROM users WHERE email=$1`, [email]))
+    const message = (await db.query(`SELECT * FROM messages WHERE id=$1`, [id]))
       .rows[0];
-    res.json({ result: user, isSuccess: true });
+    res.json({ result: message, isSuccess: true });
   }
   if (req.method === "PUT") {
-    const { email: userEmail } = req.query;
     const { email, username, url } = req.body;
 
-    const users = (
+    const messages = (
       await db.query(
-        `SELECT * FROM users WHERE email=$1 OR email=$2 OR username=$3`,
-        [userEmail, email, username]
+        `SELECT * FROM messages WHERE id=$1 OR email=$2 OR username=$3`,
+        [id, email, username]
       )
     ).rows;
 
     if (
-      users.find(
-        (user) => user.username === username && user.email !== userEmail
+      messages.find(
+        (message) => message.username === username && message.email !== id
       )
     ) {
       return res.status(403).json({
@@ -39,8 +38,8 @@ export default async function handler(
     }
 
     if (
-      users.find((user) => {
-        return user.email !== userEmail && user.email === email;
+      messages.find((message) => {
+        return message.id !== id && message.email === email;
       })
     ) {
       return res.status(403).json({
@@ -50,23 +49,20 @@ export default async function handler(
       });
     }
 
-    const updatedUser = (
+    const updatedMessage = (
       await db.query(
-        `UPDATE users SET email=$1, username=$2, url=$3 WHERE email=$4 RETURNING email, username, url;`,
-        [email, username, url, userEmail]
+        `UPDATE messages SET email=$1, username=$2, url=$3 WHERE id=$4 RETURNING email, username, url;`,
+        [email, username, url, id]
       )
     ).rows[0];
 
-    res.json({ result: updatedUser, isSuccess: true });
+    res.json({ result: updatedMessage, isSuccess: true });
   }
 
   if (req.method === "DELETE") {
-    const { email } = req.query;
-
     // Delete user
-    const response = (
-      await db.query(`DELETE FROM users WHERE email=$1;`, [email])
-    ).rows;
+    const response = (await db.query(`DELETE FROM messages WHERE id=$1;`, [id]))
+      .rows;
     res.json({ result: null, isSuccess: true });
   }
 }

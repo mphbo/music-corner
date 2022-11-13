@@ -21,6 +21,20 @@ const Play: NextPage = () => {
         setUsers(result);
       })
       .catch(({ response: { data } }) => setServerError(data));
+
+    // axios
+    //   .get("/api/messages")
+    //   .then(({ data: { result } }) => {
+    //     setUsers(result);
+    //   })
+    //   .catch(({ response: { data } }) => setServerError(data));
+
+    // axios
+    //   .put("/api/customQuery")
+    //   .then(({ data: { result } }) => {
+    //     console.log(result);
+    //   })
+    //   .catch(({ response: { data } }) => setServerError(data));
   }, []);
 
   const players = users.map((user, index) => (
@@ -30,7 +44,7 @@ const Play: NextPage = () => {
       transition={{ delay: 0.08 }}
       key={index}
     >
-      {/* <SoundCloudWidget {...user} setUsers={setUsers} /> */}
+      <SoundCloudWidget {...user} setUsers={setUsers} />
     </motion.div>
   ));
   return (
