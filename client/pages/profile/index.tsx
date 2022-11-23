@@ -3,18 +3,18 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import styles from "../styles/Registration.module.scss";
+import styles from "../../styles/Registration.module.scss";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { IErrors, IFormData } from "../types/profile";
+import { IErrors, IFormData } from "../../types/profile";
 import {
   errorsInitialState,
   formDataInitialState,
   formFields,
-} from "../constants/profile";
+} from "../../constants/profile";
 import { useSession } from "next-auth/client";
-import CloudinaryUploadWidget from "../components/CloudinaryUploadWidget";
-import { ImageUpload } from "../components/CustomCloudinaryUploadWidget/components/ImageUpload";
+import CloudinaryUploadWidget from "../../components/CloudinaryUploadWidget";
+import { ImageUpload } from "../../components/CustomCloudinaryUploadWidget/components/ImageUpload";
 
 const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
@@ -24,6 +24,7 @@ const Profile: NextPage = () => {
     email: "",
     username: "",
     url: "",
+    id: 0,
   });
   const [formData, setFormData] = useState<IFormData>(user);
   const router = useRouter();
@@ -33,15 +34,15 @@ const Profile: NextPage = () => {
   }, [session, loading]);
 
   useEffect(() => {
+    console.log("session from profile:", session);
     if (session) {
-      axios
-        .get(`/api/users/${session?.user?.email}`)
-        .then(({ data: { result } }) => {
-          setFormData(result);
-          if (result) {
-            setUser(result);
-          }
-        });
+      axios.get(`/api/users/${session?.id}`).then(({ data: { result } }) => {
+        console.log(result);
+        setFormData(result);
+        if (result) {
+          setUser(result);
+        }
+      });
     }
   }, [session]);
 
@@ -130,7 +131,7 @@ const Profile: NextPage = () => {
         )}
 
         <h1 className={styles.register}>Update profile</h1>
-        <ImageUpload email={user.email} />
+        <ImageUpload id={user.id} />
         <Form
           className={styles.form}
           value={formData}

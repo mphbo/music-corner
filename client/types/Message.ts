@@ -1,5 +1,6 @@
-interface Message {
+export interface Message {
   sender: number;
   receiver: number;
-  message: string;
+  content: string;
+  time: string;
 }

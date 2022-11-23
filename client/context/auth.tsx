@@ -10,6 +10,7 @@ export interface IUser {
   username: string;
   email: string;
   url: string;
+  id: number;
 }
 
 interface IAuthContext {

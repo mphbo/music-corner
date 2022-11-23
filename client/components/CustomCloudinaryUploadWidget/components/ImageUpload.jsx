@@ -5,7 +5,7 @@ import keys from "../../../utils/keys";
 import CldPhoto from "../../CloudinaryUploadWidget/components/CldPhoto";
 import { generateSignature } from "../utils/generateSignature";
 
-export function ImageUpload({ email }) {
+export function ImageUpload({ id }) {
   const [isImageUploaded, setIsImageUploaded] = useState(true);
 
   const uploadToCloudinary = async () => {
@@ -14,7 +14,7 @@ export function ImageUpload({ email }) {
       {
         cloudName: keys.cloudName,
         uploadPreset: "shwackcloud",
-        public_id: `${email}`,
+        public_id: `${id}`,
         resourceType: "image",
         multiple: false,
         apiKey: keys.cloudApiKey,
@@ -47,7 +47,7 @@ export function ImageUpload({ email }) {
           width="400"
           height="400"
           src={`
-            https://res.cloudinary.com/${keys.cloudName}/image/upload/shwackcloud/${email}
+            https://res.cloudinary.com/${keys.cloudName}/image/upload/shwackcloud/${id}
             `}
         />
       </Avatar>

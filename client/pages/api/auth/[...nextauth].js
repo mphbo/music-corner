@@ -9,7 +9,7 @@ export default NextAuth({
   },
   providers: [
     Providers.Credentials({
-      async authorize(credentials: { email: string; password: string }) {
+      async authorize(credentials) {
         const { email, password } = credentials;
         const user = (
           await db.query(`SELECT * FROM users WHERE email=$1`, [email])
@@ -23,9 +23,31 @@ export default NextAuth({
         if (!isValid) {
           throw new Error("Wrong password/email combination.");
         }
-
-        return { email: user.email, url: user.url, username: user.username };
+        // session.user = user;
+        return {
+          email: user.email,
+          url: user.url,
+          username: user.username,
+          id: user.id,
+        };
       },
     }),
   ],
+  callbacks: {
+    async jwt(token, user, account, profile, isNewUser) {
+      if (profile) {
+        token.id = profile.id;
+        token.url = profile.url;
+        token.username = profile.username;
+      }
+      return token;
+    },
+    async session(session, token) {
+      session.id = token.id;
+      session.username = token.username;
+      session.email = token.email;
+      session.url = token.url;
+      return session;
+    },
+  },
 });

@@ -1,103 +1,107 @@
-import { Avatar, Box, Button, Text, Tip } from "grommet";
-import styles from "./styles/ChatList.module.scss";
+import axios from "axios";
+import { Avatar, Box, Button, Stack, Text, Tip } from "grommet";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { IUser } from "../../../context/auth";
+import keys from "../../../utils/keys";
+import styles from "./styles/UserList.module.scss";
+import { User } from "./User";
 
-export const ChatList = () => {
-  const messages = [
+export const UserList = () => {
+  const [users, setUsers] = useState<IUser[] | []>([]);
+  const [serverError, setServerError] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("/api/users")
+      .then(({ data: { result } }) => {
+        setUsers(result);
+      })
+      .catch(({ response: { data } }) => setServerError(data));
+  }, []);
+
+  const usersx = [
     {
       username: "larry",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "logannormanthomas@protonmail.com",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "asdf",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "logannormanthomas@protonmail.com",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "test",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "logannormanthomas@protonmail.com",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "hello",
-      content: "Hello there, how are youare youare youare you?",
-      time: "4:59",
+      email: "test@test.c",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "world",
-      content: "Hello there, how are you?",
-      time: "4:59",
-      avatar:
-        "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
-    },
-    {
-      username: "larry",
-      content: "Hello there, how are you?",
-      time: "4:59",
-      avatar:
-        "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
-    },
-    {
-      username: "asdf",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "test@test.c",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "test",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "test@test.c",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "hello",
-      content: "Hello there, how are youare youare youare you?",
-      time: "4:59",
+      email: "test@test.c",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
     {
       username: "world",
-      content: "Hello there, how are you?",
-      time: "4:59",
+      email: "test@test.c",
+      avatar:
+        "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
+    },
+    {
+      username: "world",
+      email: "test@test.c",
+      avatar:
+        "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
+    },
+    {
+      username: "world",
+      email: "test@test.c",
+      avatar:
+        "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
+    },
+    {
+      username: "world",
+      email: "test@test.c",
       avatar:
         "https://www.svg.com/img/gallery/this-lord-of-the-rings-character-is-getting-his-own-game/intro-1578339463.jpg",
     },
   ];
 
-  const chatListItems = messages.map((message, i) => {
-    return (
-      <Box direction="row" width="full" gap="medium" pad="medium">
-        <Avatar src={message.avatar} className={styles.avatar} />
-        <Box
-          direction="row"
-          align="center"
-          justify="between"
-          width="full"
-          gap="large"
-        >
-          <Box direction="column">
-            <Text>{message.username}</Text>
-            <Text truncate>{message.content}</Text>
-          </Box>
-          <Text>{message.time}</Text>
-        </Box>
-      </Box>
-    );
+  const userListItems = users.map((user, i) => {
+    console.log(i);
+    return <User username={user.username} id={user.id} />;
   });
+
   return (
-    <Box direction="column" gap="small" margin="small">
-      {chatListItems}
+    <Box
+      className={styles.userList}
+      overflow="scroll"
+      direction="row"
+      gap="small"
+    >
+      {userListItems}
     </Box>
   );
 };

@@ -6,17 +6,19 @@ import {
   responsive,
 } from "@cloudinary/react";
 import { Cloudinary, CloudinaryImage } from "@cloudinary/url-gen";
-import keys from "../../utils/keys";
+import keys from "../../../utils/keys";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 
-export const User = ({ email, username }) => {
+export const User = ({ id, username }) => {
   const cld = new Cloudinary({
     cloud: {
       cloudName: keys.cloudName,
     },
   });
 
-  const img = cld.image(`shwackcloud/${email}`);
+  console.log(id);
+
+  const img = cld.image(`shwackcloud/${id}`);
   img.resize(fill(60, 60));
 
   return (
