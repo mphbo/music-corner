@@ -2,8 +2,12 @@ import { Avatar, Button, Stack, Text } from "grommet";
 import { Cloudinary } from "@cloudinary/url-gen";
 import keys from "../../../../utils/keys";
 import { fill } from "@cloudinary/url-gen/actions/resize";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const User = ({ id, username }) => {
+  const router = useRouter();
+
   const cld = new Cloudinary({
     cloud: {
       cloudName: keys.cloudName,
@@ -17,6 +21,7 @@ export const User = ({ id, username }) => {
   return (
     <Stack anchor="bottom" style={{ height: 100 }}>
       <Button
+        onClick={() => router.push(`/chat/${id}`)}
         icon={
           <Avatar
             size="large"
@@ -24,7 +29,7 @@ export const User = ({ id, username }) => {
           ></Avatar>
         }
       />
-      <Text>{username}</Text>
+      <Text onClick={() => router.push(`/chat/${id}`)}>{username}</Text>
     </Stack>
   );
 };

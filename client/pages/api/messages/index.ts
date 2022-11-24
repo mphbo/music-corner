@@ -11,18 +11,24 @@ export default async function handler(
   res: NextApiResponse<ServiceResponse<IMessage[] | null>>
 ) {
   if (req.method === "GET") {
-    const { id } = req.query;
+    const { userId, otherId } = req.query;
     let messages;
-    console.log("ID====>", id);
-    if (id) {
+    console.log("userId ====>", userId);
+    console.log("otherId ====>", otherId);
+    if (otherId) {
       messages = (
         await db.query(
-          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1",
-          [id]
+          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1 AND sender=$2 OR receiver=$2",
+          [userId, otherId]
         )
       ).rows;
     } else {
-      messages = (await db.query("SELECT * FROM messages")).rows;
+      messages = (
+        await db.query(
+          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1",
+          [userId]
+        )
+      ).rows;
     }
 
     res.json({ result: messages, isSuccess: true });

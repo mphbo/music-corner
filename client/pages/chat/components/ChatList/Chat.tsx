@@ -1,15 +1,27 @@
 import { Avatar, Box, Text } from "grommet";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getUser } from "../../../../helpers/getUser";
 import { IMessage } from "../../../../types/Message";
+import { User } from "../../../../types/User";
 import keys from "../../../../utils/keys";
 import styles from "./styles/ChatList.module.scss";
 
 function Chat({ message }: { message: IMessage }) {
   const [session, loading] = useSession();
+  const [user, setUser] = useState<User>();
   const otherUser =
     message.receiver !== session?.id ? message.receiver : message.sender;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getUser(otherUser);
+      setUser(user);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Link href={`/chat/${otherUser}`}>
       <Box direction="row" width="full" gap="medium" pad="medium">
@@ -25,7 +37,7 @@ function Chat({ message }: { message: IMessage }) {
           gap="large"
         >
           <Box direction="column">
-            <Text>{otherUser}</Text>
+            <Text>{user?.username}</Text>
             <Text truncate>{message.content}</Text>
           </Box>
           <Text>{`${Math.round(

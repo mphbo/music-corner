@@ -41,7 +41,7 @@ export const ChatList = () => {
     // createMessage();
 
     const fetchData = async () => {
-      const messages = await getMessages();
+      const messages = await getMessages(session?.id);
       setMessages(messages);
     };
 
@@ -50,7 +50,6 @@ export const ChatList = () => {
 
   const chatListItems = filterMessages(messages, 1).map(
     (chat: IMessage, index) => {
-      console.log(`/chat/${chat.sender}`);
       return <Chat key={index} message={chat} />;
     }
   );
