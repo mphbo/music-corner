@@ -20,7 +20,7 @@ db.on("connect", (client) => {
   //   .catch((error) => console.error("drop table error =====>", error));
   client
     .query(
-      "CREATE TABLE IF NOT EXISTS messages (id SERIAL PRIMARY KEY, sender INT, receiver INT, content TEXT)"
+      "CREATE TABLE IF NOT EXISTS messages (id SERIAL PRIMARY KEY, sender INT, receiver INT, content TEXT, time BIGINT)"
     )
     .catch((error) =>
       console.error("create message table error =====>", error)

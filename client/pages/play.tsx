@@ -21,21 +21,6 @@ const Play: NextPage = () => {
         setUsers(result);
       })
       .catch(({ response: { data } }) => setServerError(data));
-
-    axios
-      .get("/api/messages")
-      .then(({ data: { result } }) => {
-        // setUsers(result);
-        console.log(result);
-      })
-      .catch(({ response: { data } }) => setServerError(data));
-
-    // axios
-    //   .put("/api/customQuery")
-    //   .then(({ data: { result } }) => {
-    //     console.log(result);
-    //   })
-    //   .catch(({ response: { data } }) => setServerError(data));
   }, []);
 
   const players = users.map((user, index) => (

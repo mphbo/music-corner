@@ -91,7 +91,7 @@ export const UserList = () => {
 
   const userListItems = users.map((user, i) => {
     console.log(i);
-    return <User username={user.username} id={user.id} />;
+    return <User key={i} username={user.username} id={user.id} />;
   });
 
   return (

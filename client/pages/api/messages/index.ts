@@ -12,22 +12,29 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { id } = req.query;
-    const messages: Message[] = (
-      await db.query("SELECT * FROM messages WHERE sender=$1 OR receiver=$1", [
-        id,
-      ])
-    ).rows;
+    let messages;
+    console.log("ID====>", id);
+    if (id) {
+      messages = (
+        await db.query(
+          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1",
+          [id]
+        )
+      ).rows;
+    } else {
+      messages = (await db.query("SELECT * FROM messages")).rows;
+    }
 
     res.json({ result: messages, isSuccess: true });
   }
 
   if (req.method === "POST") {
-    const { sender, receiver, content } = req.body;
+    const { sender, receiver, content, time } = req.body;
 
     const message = await (
       await db.query(
-        "INSERT INTO messages (sender, receiver, content) VALUES($1, $2, $3) returning *;",
-        [sender, receiver, content]
+        "INSERT INTO messages (sender, receiver, content, time) VALUES($1, $2, $3, $4) returning *;",
+        [sender, receiver, content, time]
       )
     ).rows[0];
 

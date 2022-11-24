@@ -47,7 +47,7 @@ export function ImageUpload({ id }) {
           width="400"
           height="400"
           src={`
-            https://res.cloudinary.com/${keys.cloudName}/image/upload/shwackcloud/${id}
+            https://res.cloudinary.com/${keys.cloudName}/image/upload/d_shwackcloud:horse/shwackcloud/${id}
             `}
         />
       </Avatar>
