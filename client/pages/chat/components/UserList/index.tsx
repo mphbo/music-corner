@@ -2,8 +2,8 @@ import axios from "axios";
 import { Avatar, Box, Button, Stack, Text, Tip } from "grommet";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { IUser } from "../../../context/auth";
-import keys from "../../../utils/keys";
+import { IUser } from "../../../../context/auth";
+import keys from "../../../../utils/keys";
 import styles from "./styles/UserList.module.scss";
 import { User } from "./User";
 

@@ -47,7 +47,6 @@ export function BackgroundPlayer({
   const [playlistIndex, setPlaylistIndex] = useState<number>(
     music.playlistIndex
   );
-  const [events, setEvents] = useState<any>();
 
   useEffect(() => {
     setPlaylistIndex(music.playlistIndex);
@@ -63,8 +62,6 @@ export function BackgroundPlayer({
 
   // initialization - load soundcloud widget API and set SC event listeners
 
-  console.log(events);
-
   useEffect(() => {
     // use load-script module to load SC Widget API
     loadscript("https://w.soundcloud.com/player/api.js", () => {
@@ -75,8 +72,6 @@ export function BackgroundPlayer({
 
       const { PLAY, PLAY_PROGRESS, PAUSE, FINISH, ERROR } =
         window.SC.Widget.Events;
-
-      setEvents(window.SC.Widget.Events);
 
       // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
 

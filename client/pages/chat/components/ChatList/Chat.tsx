@@ -2,11 +2,11 @@ import { Avatar, Box, Text } from "grommet";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import React from "react";
-import { Message } from "../../../types/Message";
-import keys from "../../../utils/keys";
+import { IMessage } from "../../../../types/Message";
+import keys from "../../../../utils/keys";
 import styles from "./styles/ChatList.module.scss";
 
-function Chat({ message }: { message: Message }) {
+function Chat({ message }: { message: IMessage }) {
   const [session, loading] = useSession();
   const otherUser =
     message.receiver !== session?.id ? message.receiver : message.sender;

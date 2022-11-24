@@ -4,11 +4,11 @@ import { ServiceResponse } from "../../../types/service-response";
 import { User } from "../../../types/User";
 import { Messages } from "../../../types/messages";
 import { db } from "../../../utils/dbConnect";
-import { Message } from "../../../types/Message";
+import { IMessage } from "../../../types/Message";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ServiceResponse<Message[] | null>>
+  res: NextApiResponse<ServiceResponse<IMessage[] | null>>
 ) {
   if (req.method === "GET") {
     const { id } = req.query;

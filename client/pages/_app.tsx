@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { Grommet } from "grommet";
 import { useState } from "react";
 import Layout from "../components/Layout";
-import { AuthProvider } from "../context/auth";
+import { MusicProvider } from "../context/music";
 import Head from "next/head";
 import { Provider } from "next-auth/client";
 
@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps }: any) {
 
   return (
     <Grommet theme={theme}>
-      <AuthProvider>
+      <MusicProvider>
         <Provider session={pageProps.session}>
           <Layout>
             <Head>
@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps }: any) {
             <Component {...pageProps} setTheme={setTheme} />
           </Layout>
         </Provider>
-      </AuthProvider>
+      </MusicProvider>
     </Grommet>
   );
 }

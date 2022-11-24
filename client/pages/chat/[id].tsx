@@ -1,57 +1,38 @@
-import { Box } from "grommet";
-import { Login, User } from "grommet-icons";
+import { Box, Text } from "grommet";
 import type { NextPage } from "next";
-import Head from "next/head";
-import { ChatList } from "./ChatList";
-import { UserList } from "./UserList";
-import styles from "../styles/Chat.module.scss";
-import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { IMessage } from "../../types/Message";
+import { getMessages } from "../../helpers/getMessages";
+import Message from "./components/Message";
 
-const ChatBox: NextPage = (props) => {
-  console.log("PROPS =====>", props);
+const ChatBox: NextPage = () => {
+  const [messages, setMessages] = useState<IMessage[] | []>([]);
+  const router = useRouter();
+  const { id } = router.query;
+  const userId = typeof id === "string" ? parseInt(id) : 0;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const messages = await getMessages(userId);
+      setMessages(messages);
+    };
+    fetchData();
+  }, []);
+
+  console.log("id:", id);
+  console.log("typeof id:", typeof id === "string");
+  console.log("messages:", messages);
+
+  const messageListItems = messages.map((message: IMessage) => {
+    return <Message message={message} id={userId} />;
+  });
   return (
     <Box>
-      {/* horizontal user list */}
-      {/* <UserList />
-      {/* vertical chat list */}
-      {/* <ChatList /> */} */}
+      <Box overflow="scroll">{messageListItems}</Box>
+      <Text>Hello</Text>
     </Box>
   );
 };
-
-// export async function getStaticProps(context: any) {
-//   const { params } = context;
-//   const id = params.id;
-
-//   const getMessagesById = (id: number) => {
-//     let messages;
-//     axios
-//       .get(`/api/messages?id=${id}`)
-//       .then(({ data: { result } }) => {
-//         console.log("messageResult:", result);
-//         messages = result;
-//       })
-//       .catch(
-//         ({
-//           response: {
-//             data: { message },
-//           },
-//         }) => console.log(message)
-//       );
-//     return messages;
-//   };
-
-//   const messages = getMessagesById(id);
-
-//   return {
-//     props: {
-//       messages,
-//     },
-//   };
-// }
-
-// export async function getStaticPaths = () => {
-//     const
-// }
 
 export default ChatBox;

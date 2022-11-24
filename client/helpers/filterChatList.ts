@@ -1,19 +1,19 @@
-import { Message } from "../types/Message";
+import { IMessage } from "../types/Message";
 
-export const filterMessages = (messages: Message[], id: number) => {
-  const messagesToReturn: Message[] = [];
+export const filterMessages = (messages: IMessage[], id: number) => {
+  const messagesToReturn: IMessage[] = [];
   const filteredMessages = messages
-    .sort((a: Message, b: Message) => b.time - a.time)
+    .sort((a: IMessage, b: IMessage) => b.time - a.time)
     .filter(
-      (message: Message) => message.sender === id || message.receiver === id
+      (message: IMessage) => message.sender === id || message.receiver === id
     );
 
-  filteredMessages.forEach((message: Message) => {
+  filteredMessages.forEach((message: IMessage) => {
     const otherId = message.sender !== id ? message.sender : message.receiver;
     console.log(otherId);
     if (
       !messagesToReturn.find(
-        (m: Message) => m.sender === otherId || m.receiver === otherId
+        (m: IMessage) => m.sender === otherId || m.receiver === otherId
       )
     ) {
       messagesToReturn.push(message);

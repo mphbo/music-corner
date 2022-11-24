@@ -1,6 +1,6 @@
 import { Avatar, Button, Stack, Text } from "grommet";
 import { Cloudinary } from "@cloudinary/url-gen";
-import keys from "../../../utils/keys";
+import keys from "../../../../utils/keys";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 
 export const User = ({ id, username }) => {
@@ -28,5 +28,3 @@ export const User = ({ id, username }) => {
     </Stack>
   );
 };
-
-// https://res.cloudinary.com/difcbmg8s/image/upload/v1669251509/shwackcloud/horse.jpg
