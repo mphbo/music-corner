@@ -30,10 +30,12 @@ interface ISoundCloudWidget {
   email: string;
   url: string;
   setUsers: Dispatch<SetStateAction<IUser[]>>;
+  id: number;
 }
 
 export function SoundCloudWidget({
   url,
+  id,
   email,
   username,
   setUsers,
@@ -137,7 +139,7 @@ export function SoundCloudWidget({
 
   const handleDelete = () => {
     axios
-      .delete(`/api/users/${email}`)
+      .delete(`/api/users/${id}`)
       .then(({ data: { result } }) => {
         setUsers((prev) => prev.filter((user) => user.email !== email));
       })

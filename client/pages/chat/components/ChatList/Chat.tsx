@@ -26,6 +26,7 @@ function Chat({ message }: { message: IMessage }) {
     <Link href={`/chat/${otherUser}`}>
       <Box direction="row" width="full" gap="medium" pad="medium">
         <Avatar
+          size="medium"
           src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_60,w_60/d_shwackcloud:horse.jpg/shwackcloud/${otherUser}.jpg`}
           className={styles.avatar}
         />
@@ -37,8 +38,10 @@ function Chat({ message }: { message: IMessage }) {
           gap="large"
         >
           <Box direction="column">
-            <Text>{user?.username}</Text>
-            <Text truncate>{message.content}</Text>
+            <Text size="small">{user?.username}</Text>
+            <Text size="small" truncate>
+              {message.content}
+            </Text>
           </Box>
           <Text>{`${Math.round(
             (Date.now() - message.time) / (1000 * 60)
