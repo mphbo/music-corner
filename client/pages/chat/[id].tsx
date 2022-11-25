@@ -35,12 +35,7 @@ const ChatBox: NextPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  // console.log("id:", id);
-  // console.log("typeof id:", typeof id === "string");
-  // console.log("messages:", messages);
-  console.log("value:", value);
-
-  const handleSubmit = async (value: string) => {
+  const handleSubmit = async (value: { message: string }) => {
     console.log(value);
     const result = await createMessage(value.message, session?.id, otherId);
     console.log("result:", result);
@@ -48,16 +43,21 @@ const ChatBox: NextPage = () => {
     setMessages(messages);
   };
 
+  const handleReset = () => {
+    setValue({ message: "" });
+  };
+
   const messageListItems = messages?.map((message: IMessage) => {
     return <Message message={message} id={otherId} />;
   });
+
   return (
     <Box>
       <Box overflow="scroll">{messageListItems}</Box>
       <Form
         value={value}
-        onChange={(value) => setValue(value)}
-        onReset={() => setValue("")}
+        onChange={setValue}
+        onReset={handleReset}
         onSubmit={({ value }) => handleSubmit(value)}
       >
         <FormField label="message" name="message">

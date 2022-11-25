@@ -13,29 +13,6 @@ export const ChatList = () => {
   const [session, loading] = useSession();
   const [messages, setMessages] = useState<IMessage[] | []>([]);
 
-  const createMessage = () => {
-    const time = new Date().getTime();
-    console.log("DATE:", time);
-    axios
-      .post(`/api/messages`, {
-        content: "hello",
-        sender: 1,
-        receiver: 2,
-        time,
-      })
-      .then(({ data: { result } }) => {
-        console.log("messageResult:", result);
-        // setMessages(result);
-      })
-      .catch(
-        ({
-          response: {
-            data: { message },
-          },
-        }) => console.log(message)
-      );
-  };
-
   useEffect(() => {
     console.log("session:", session);
     // createMessage();

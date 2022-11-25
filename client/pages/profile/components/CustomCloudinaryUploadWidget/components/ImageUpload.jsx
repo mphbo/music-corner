@@ -1,8 +1,9 @@
-import { Avatar, Button } from "grommet";
+import { Avatar, Box, Button } from "grommet";
 import Image from "next/image";
 import { useState } from "react";
-import keys from "../../../utils/keys";
-import CldPhoto from "../../CloudinaryUploadWidget/components/CldPhoto";
+import keys from "../../../../../utils/keys";
+import CldPhoto from "../../../../../components/CloudinaryUploadWidget/components/CldPhoto";
+import styles from "../styles/ImageUpload.module.scss";
 import { generateSignature } from "../utils/generateSignature";
 
 export function ImageUpload({ id }) {
@@ -35,7 +36,7 @@ export function ImageUpload({ id }) {
   };
 
   return (
-    <div>
+    <Box>
       {/* {isImageUploaded ? (
         <>
         <div>Successfully uploaded</div>
@@ -46,6 +47,7 @@ export function ImageUpload({ id }) {
         <Image
           width="400"
           height="400"
+          objectFit="cover"
           src={`
             https://res.cloudinary.com/${keys.cloudName}/image/upload/d_shwackcloud:horse/shwackcloud/${id}
             `}
@@ -53,7 +55,12 @@ export function ImageUpload({ id }) {
       </Avatar>
       {/* // <CldPhoto publicId={email} cloudName={keys.cloudName} /> */}
       {/* )} */}
-      <Button primary onClick={uploadToCloudinary} label="Upload Image" />
-    </div>
+      <Button
+        className={styles.button}
+        size="small"
+        onClick={uploadToCloudinary}
+        label="Upload Image"
+      />
+    </Box>
   );
 }

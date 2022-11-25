@@ -7,7 +7,6 @@ function Message({ message, id }: { message: IMessage; id: number }) {
   const isUser = id === message.sender;
   return (
     <Box
-      overflow="scroll"
       alignSelf={isUser ? "start" : "end"}
       background={isUser ? "white" : colors.primary}
       width="small"

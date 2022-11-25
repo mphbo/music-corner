@@ -15,7 +15,14 @@ export default async function handler(
     let messages;
     console.log("userId ====>", userId);
     console.log("otherId ====>", otherId);
-    if (otherId) {
+    if (userId === otherId) {
+      messages = (
+        await db.query(
+          "SELECT * FROM messages WHERE sender=$1 AND receiver=$1",
+          [userId]
+        )
+      ).rows;
+    } else if (otherId) {
       messages = (
         await db.query(
           "SELECT * FROM messages WHERE (sender=$1 AND receiver=$2) OR (sender=$2 OR receiver=$1)",
