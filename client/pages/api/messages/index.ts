@@ -18,7 +18,7 @@ export default async function handler(
     if (otherId) {
       messages = (
         await db.query(
-          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1 AND sender=$2 OR receiver=$2",
+          "SELECT * FROM messages WHERE (sender=$1 AND receiver=$2) OR (sender=$2 OR receiver=$1)",
           [userId, otherId]
         )
       ).rows;
