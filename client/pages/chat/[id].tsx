@@ -47,8 +47,8 @@ const ChatBox: NextPage = () => {
     setValue({ message: "" });
   };
 
-  const messageListItems = messages?.map((message: IMessage) => {
-    return <Message message={message} id={otherId} />;
+  const messageListItems = messages?.map((message: IMessage, index) => {
+    return <Message key={index} message={message} id={otherId} />;
   });
 
   return (
