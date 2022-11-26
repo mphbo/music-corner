@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "./styles/User.module.scss";
 
-export const User = ({ id, username }) => {
+const User = ({ id, username }) => {
   const router = useRouter();
 
   const cld = new Cloudinary({
@@ -43,3 +43,5 @@ export const User = ({ id, username }) => {
     </div>
   );
 };
+
+export default User;

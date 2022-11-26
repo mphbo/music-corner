@@ -4,7 +4,7 @@ import { IMessage } from "../../../types/Message";
 import { colors } from "../../_app";
 
 function Message({ message, id }: { message: IMessage; id: number }) {
-  const isUser = id === message.sender;
+  const isUser = id === message?.sender;
   return (
     <Box
       alignSelf={isUser ? "start" : "end"}
@@ -14,7 +14,7 @@ function Message({ message, id }: { message: IMessage; id: number }) {
       round="xlarge"
       margin="xsmall"
     >
-      {message.content}
+      {message?.content}
     </Box>
   );
 }

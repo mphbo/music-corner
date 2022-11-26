@@ -9,7 +9,7 @@ import { IMessage } from "../../../../types/Message";
 import Chat from "./Chat";
 import styles from "./styles/ChatList.module.scss";
 
-export const ChatList = () => {
+const ChatList = () => {
   const [session, loading] = useSession();
   const [messages, setMessages] = useState<IMessage[] | []>([]);
 
@@ -37,3 +37,5 @@ export const ChatList = () => {
     </Box>
   );
 };
+
+export default ChatList;

@@ -1,4 +1,4 @@
-export function generateSignature(callback, paramsToSign) {
+function generateSignature(callback, paramsToSign) {
   fetch("/api/sign", {
     method: "POST",
     body: JSON.stringify({
@@ -10,3 +10,5 @@ export function generateSignature(callback, paramsToSign) {
       callback(signature);
     });
 }
+
+export default generateSignature;

@@ -4,9 +4,9 @@ import { useState } from "react";
 import keys from "../../../../../utils/keys";
 import CldPhoto from "../../../../../components/CloudinaryUploadWidget/components/CldPhoto";
 import styles from "../styles/ImageUpload.module.scss";
-import { generateSignature } from "../utils/generateSignature";
+import generateSignature from "../utils/generateSignature";
 
-export function ImageUpload({ id }) {
+function ImageUpload({ id }) {
   const [isImageUploaded, setIsImageUploaded] = useState(true);
 
   const uploadToCloudinary = async () => {
@@ -64,3 +64,5 @@ export function ImageUpload({ id }) {
     </Box>
   );
 }
+
+export default ImageUpload;

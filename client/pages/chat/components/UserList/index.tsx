@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { IUser } from "../../../../context/auth";
 import keys from "../../../../utils/keys";
 import styles from "./styles/UserList.module.scss";
-import { User } from "./User";
+import User from "./User";
 
-export const UserList = () => {
+const UserList = () => {
   const [users, setUsers] = useState<IUser[] | []>([]);
   const [serverError, setServerError] = useState("");
 
@@ -105,3 +105,5 @@ export const UserList = () => {
     </Box>
   );
 };
+
+export default UserList;

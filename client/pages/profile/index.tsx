@@ -14,7 +14,7 @@ import {
 } from "../../constants/profile";
 import { useSession } from "next-auth/client";
 import CloudinaryUploadWidget from "../../components/CloudinaryUploadWidget";
-import { ImageUpload } from "./components/CustomCloudinaryUploadWidget/components/ImageUpload";
+import ImageUpload from "./components/CustomCloudinaryUploadWidget/components/ImageUpload";
 
 const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);

@@ -12,7 +12,7 @@ function Chat({ message }: { message: IMessage }) {
   const [session, loading] = useSession();
   const [user, setUser] = useState<User>();
   const otherUser =
-    message.receiver !== session?.id ? message.receiver : message.sender;
+    message?.receiver !== session?.id ? message?.receiver : message?.sender;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +40,11 @@ function Chat({ message }: { message: IMessage }) {
           <Box direction="column">
             <Text size="small">{user?.username}</Text>
             <Text size="small" truncate>
-              {message.content}
+              {message?.content}
             </Text>
           </Box>
           <Text>{`${Math.round(
-            (Date.now() - message.time) / (1000 * 60)
+            (Date.now() - message?.time) / (1000 * 60)
           )} min`}</Text>
         </Box>
       </Box>
