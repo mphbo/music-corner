@@ -1,11 +1,12 @@
 import axios from "axios";
+import { IMessage } from "../types/Message";
 
-export const createMessage = async (
-  content: string,
-  sender: any,
-  receiver: number
-) => {
-  const time = new Date().getTime();
+export const createMessage = async ({
+  content,
+  sender,
+  receiver,
+  time,
+}: any) => {
   const result = await axios
     .post(`/api/messages`, {
       content,
