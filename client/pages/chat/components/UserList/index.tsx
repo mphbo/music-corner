@@ -89,7 +89,7 @@ const UserList = () => {
     },
   ];
 
-  const userListItems = [...users, ...users].map((user, i) => {
+  const userListItems = users.map((user, i) => {
     console.log(i);
     return <User key={i} username={user.username} id={user.id} />;
   });
