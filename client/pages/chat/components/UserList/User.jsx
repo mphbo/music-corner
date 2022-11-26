@@ -44,6 +44,6 @@ const User = ({ id = 0, username = "" }) => {
   );
 };
 
-export const getInitialProps = async () => {};
+User.getInitialProps = async () => {};
 
 export default User;
