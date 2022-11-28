@@ -3,10 +3,10 @@ import { Chat, Help, Home, Login, Logout, Play, User } from "grommet-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import ShwackCloudIcon from "../../public/ShwackCloudIcon.png";
 import styles from "./styles/Layout.module.scss";
-import { useSession, signOut } from "next-auth/client";
+import { useSession, signOut, getSession } from "next-auth/client";
 
 interface ILayout {
   children: any;
@@ -20,6 +20,10 @@ function Layout({ children }: ILayout) {
     signOut();
     router.push("/login");
   };
+
+  useEffect(() => {
+    getSession();
+  }, [session]);
 
   return (
     <>

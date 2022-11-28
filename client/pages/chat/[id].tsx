@@ -7,9 +7,7 @@ import { getMessages } from "../../helpers/getMessages";
 import Message from "./components/Message";
 import { useSession } from "next-auth/client";
 import { createMessage } from "../../helpers/createMessage";
-import io from "socket.io-client";
-import axios from "axios";
-let socket: any;
+import { socket } from "../../helpers/socket";
 
 const ChatBox: NextPage = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
@@ -25,28 +23,23 @@ const ChatBox: NextPage = () => {
     endOfChatRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const socketInitializer = async () => {
-    await axios.get("/api/socket");
-    socket = io();
-
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-
-    socket.on("new-message", (msg: any) => {
-      console.log("msg:", msg);
-    });
-    if (socket) return () => socket.disconnect();
-  };
-
   useEffect(() => {
-    socketInitializer();
+    const eventHandler = async (data: any) => {
+      const incomingMessages = await getMessages(session?.id, otherId);
+      setMessages(incomingMessages);
+    };
+    socket.on("new-message", eventHandler);
+
     scrollToBottom();
     const fetchData = async () => {
       const messages = await getMessages(session?.id, otherId);
       setMessages(messages);
     };
     fetchData();
+
+    return () => {
+      socket.off("message", eventHandler);
+    };
   }, []);
 
   useEffect(() => {

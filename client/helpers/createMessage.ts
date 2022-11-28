@@ -15,7 +15,6 @@ export const createMessage = async ({
       time,
     })
     .then(({ data: { result } }) => {
-      console.log("messageResult:", result);
       return result;
     })
     .catch(
