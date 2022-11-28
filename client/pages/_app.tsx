@@ -5,13 +5,13 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import { MusicProvider } from "../context/music";
 import Head from "next/head";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 
 export enum colors {
   primary = "#228BE6",
 }
 
-function MyApp({ Component, pageProps }: any) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const [theme, setTheme] = useState({
     global: {
       colors: {
@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <Grommet theme={theme}>
       <MusicProvider>
-        <Provider session={pageProps.session}>
+        <SessionProvider session={session} refetchInterval={5 * 60}>
           <Layout>
             <Head>
               <meta name="description" content="Created by Logan Thomas" />
@@ -59,7 +59,7 @@ function MyApp({ Component, pageProps }: any) {
             </Head>
             <Component {...pageProps} setTheme={setTheme} />
           </Layout>
-        </Provider>
+        </SessionProvider>
       </MusicProvider>
     </Grommet>
   );

@@ -6,14 +6,15 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import ShwackCloudIcon from "../../public/ShwackCloudIcon.png";
 import styles from "./styles/Layout.module.scss";
-import { useSession, signOut, getSession } from "next-auth/client";
+import { useSession, signOut, getSession } from "next-auth/react";
 
 interface ILayout {
   children: any;
 }
 
 function Layout({ children }: ILayout) {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   const router = useRouter();
 
   const handleLogout = () => {
@@ -22,7 +23,12 @@ function Layout({ children }: ILayout) {
   };
 
   useEffect(() => {
-    getSession();
+    const fetchData = async () => {
+      const sessionObject = await getSession();
+      console.log("sessionObject:", sessionObject);
+    };
+
+    fetchData();
   }, [session]);
 
   return (

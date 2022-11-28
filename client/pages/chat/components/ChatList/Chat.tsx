@@ -1,5 +1,5 @@
 import { Avatar, Box, Text } from "grommet";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../../../helpers/getUser";
@@ -9,7 +9,7 @@ import keys from "../../../../utils/keys";
 import styles from "./styles/ChatList.module.scss";
 
 function Chat({ message }: { message: IMessage }) {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<User>();
   const otherUser =
     message?.receiver !== session?.id ? message?.receiver : message?.sender;

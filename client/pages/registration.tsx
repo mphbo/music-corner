@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Box, Button, Form, FormField, Notification, TextInput } from "grommet";
 import type { NextPage } from "next";
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";

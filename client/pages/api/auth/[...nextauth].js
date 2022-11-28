@@ -1,14 +1,14 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "../../../utils/dbConnect";
 import { verifyPassword } from "../../../utils/auth";
 
 export default NextAuth({
   session: {
-    jwt: true,
+    strategy: "jwt",
   },
   providers: [
-    Providers.Credentials({
+    CredentialsProvider({
       async authorize(credentials) {
         const { email, password } = credentials;
         const user = (
@@ -34,15 +34,15 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async jwt(token, user, account, profile, isNewUser) {
-      if (profile) {
-        token.id = profile.id;
-        token.url = profile.url;
-        token.username = profile.username;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.url = user.url;
+        token.username = user.username;
       }
       return token;
     },
-    async session(session, token) {
+    async session({ session, token }) {
       session.id = token.id;
       session.username = token.username;
       session.email = token.email;

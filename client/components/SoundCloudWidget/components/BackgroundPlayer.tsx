@@ -13,7 +13,7 @@ import axios from "axios";
 import { colors } from "../../../pages/_app";
 import styles from "../styles/SoundCloudWidget.module.scss";
 import { Down, Up } from "grommet-icons";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 // SoundCloud widget API
 //  https://developers.soundcloud.com/docs/api/html5-widget
@@ -38,7 +38,7 @@ export function BackgroundPlayer({
   setUsers,
 }: ISoundCloudWidget) {
   // state
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
 
   // used to communicate between SC widget and React

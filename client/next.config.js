@@ -14,6 +14,7 @@ const nextConfig = {
     NEXT_PUBLIC_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUD_NAME,
     CLOUD_API_KEY: process.env.CLOUD_API_KEY,
     CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
 };
 

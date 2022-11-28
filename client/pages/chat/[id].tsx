@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { IMessage } from "../../types/Message";
 import { getMessages } from "../../helpers/getMessages";
 import Message from "./components/Message";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { createMessage } from "../../helpers/createMessage";
 import { socket } from "../../helpers/socket";
 
 const ChatBox: NextPage = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
   const [value, setValue] = useState<{ content: string }>({ content: "" });
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = router.query;
   const otherId = typeof id === "string" ? parseInt(id) : 0;

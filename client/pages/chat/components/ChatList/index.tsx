@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Avatar, Box, Button, Text, Tip } from "grommet";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { filterMessages } from "../../../../helpers/filterChatList";
@@ -10,7 +10,7 @@ import Chat from "./Chat";
 import styles from "./styles/ChatList.module.scss";
 
 const ChatList = () => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const [messages, setMessages] = useState<IMessage[] | []>([]);
 
   useEffect(() => {

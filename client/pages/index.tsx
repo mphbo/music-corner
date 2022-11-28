@@ -6,10 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.scss";
 import shwackCloudImage from "../public/ShwackCloud.png";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   return (
     <div className={styles.container}>
       <Head>

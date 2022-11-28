@@ -12,14 +12,15 @@ import {
   formDataInitialState,
   formFields,
 } from "../../constants/profile";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import CloudinaryUploadWidget from "../../components/CloudinaryUploadWidget";
 import ImageUpload from "./components/CustomCloudinaryUploadWidget/components/ImageUpload";
 
 const Profile: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
   const [serverError, setServerError] = useState("");
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   const [user, setUser] = useState({
     email: "",
     username: "",
