@@ -9,7 +9,7 @@ import styles from "./styles/Layout.module.scss";
 import { useSession, signOut, getSession } from "next-auth/react";
 
 interface ILayout {
-  children: any;
+  children: React.ReactNode;
 }
 
 function Layout({ children }: ILayout) {

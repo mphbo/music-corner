@@ -10,6 +10,7 @@ export default function handler(req, res) {
   res.socket.server.io = io;
 
   const onConnection = (socket) => {
+    console.log("on-connection");
     const createdMessage = (msg) => {
       socket.broadcast.emit("new-message", msg);
     };

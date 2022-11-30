@@ -8,6 +8,7 @@ import Message from "./components/Message";
 import { useSession } from "next-auth/react";
 import { createMessage } from "../../helpers/createMessage";
 import { socket } from "../../helpers/socket";
+import axios from "axios";
 
 const ChatBox: NextPage = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
@@ -24,21 +25,23 @@ const ChatBox: NextPage = () => {
   };
 
   useEffect(() => {
-    const eventHandler = async (data: any) => {
+    const handleNewMessage = async (data: any) => {
+      console.log("new-message:", data);
       const incomingMessages = await getMessages(session?.id, otherId);
       setMessages(incomingMessages);
     };
-    socket.on("new-message", eventHandler);
+    socket.on("new-message", handleNewMessage);
 
     scrollToBottom();
     const fetchData = async () => {
+      await axios.get("/api/socket");
       const messages = await getMessages(session?.id, otherId);
       setMessages(messages);
     };
     fetchData();
 
     return () => {
-      socket.off("message", eventHandler);
+      socket.off("new-message", handleNewMessage);
     };
   }, []);
 
@@ -47,7 +50,6 @@ const ChatBox: NextPage = () => {
   }, [messages]);
 
   const handleSubmit = async (value: { content: string }) => {
-    console.log(value);
     const time = new Date().getTime();
     const messageObject = {
       content: value.content,
@@ -60,6 +62,7 @@ const ChatBox: NextPage = () => {
     console.log("result:", result);
     const messages = await getMessages(session?.id, otherId);
     setMessages(messages);
+    setValue({ content: "" });
   };
 
   const handleReset = () => {
