@@ -9,16 +9,6 @@ import styles from "./styles/User.module.scss";
 const User = ({ id = 0, username = "" }) => {
   const router = useRouter();
 
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: keys.cloudName,
-    },
-  });
-
-  const img = cld.image(`shwackcloud/${id}`);
-  img.resize(fill(60, 60));
-  console.log(img.toURL());
-
   return (
     <div>
       <Box align="center" overflow="hidden" className={styles.user}>
@@ -43,7 +33,5 @@ const User = ({ id = 0, username = "" }) => {
     </div>
   );
 };
-
-User.getInitialProps = async () => {};
 
 export default User;
