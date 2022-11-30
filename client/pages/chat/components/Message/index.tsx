@@ -15,7 +15,7 @@ function Message({ message, id }: { message: IMessage; id: number }) {
           size="medium"
           margin="small"
           className={styles.avatar}
-          src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_60,w_60/d_shwackcloud:horse.jpg/shwackcloud/${message.sender}.jpg`}
+          src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_60,w_60/d_shwackcloud:horse.jpg/shwackcloud/${message?.sender}.jpg`}
         />
       )}
       <Box
@@ -32,7 +32,7 @@ function Message({ message, id }: { message: IMessage; id: number }) {
           size="medium"
           margin="small"
           className={styles.avatar}
-          src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_60,w_60/d_shwackcloud:horse.jpg/shwackcloud/${message.sender}.jpg`}
+          src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_60,w_60/d_shwackcloud:horse.jpg/shwackcloud/${message?.sender}.jpg`}
         />
       )}
     </Box>
