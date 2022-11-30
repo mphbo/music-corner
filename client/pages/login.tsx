@@ -4,9 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "../styles/Registration.module.scss";
-import axios from "axios";
-import { useAuthContext } from "../context/auth";
-import { useRouter } from "next/router";
 import { IErrors, IFormData } from "../types/login";
 import {
   errorsInitialState,
@@ -14,11 +11,14 @@ import {
   formFields,
 } from "../constants/login";
 
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+
 const Login: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>(formDataInitialState);
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
   const [serverError, setServerError] = useState("");
-  const { setUser } = useAuthContext();
+
   const router = useRouter();
 
   const handleSubmit = (formData: IFormData) => {
@@ -41,22 +41,18 @@ const Login: NextPage = () => {
       return;
     }
 
-    axios
-      .post("/api/auth/login", formData)
-      .then(({ data: { result } }) => {
-        setUser(result);
+    signIn("credentials", {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    }).then((result) => {
+      if (result?.error) {
+        setServerError(result.error);
+      } else {
         router.push("/play");
-      })
-      .catch(
-        ({
-          response: {
-            data: { message },
-          },
-        }) => setServerError(message)
-      );
+      }
+    });
   };
-
-  console.log(serverError);
 
   const handleResetFormData = () => {
     setFormData(formDataInitialState);

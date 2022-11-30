@@ -1,7 +1,6 @@
 import React, {
   useState,
   useEffect,
-  createRef,
   useRef,
   Dispatch,
   SetStateAction,
@@ -9,10 +8,10 @@ import React, {
 
 import loadscript from "load-script";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "grommet";
-import { IUser } from "../../context/auth";
+import { IUser, useMusicContext } from "../../../context/music";
 import axios from "axios";
-import { colors } from "../../pages/_app";
-import styles from "./styles/SoundCloudWidget.module.scss";
+import { colors } from "../../../pages/_app";
+import styles from "../styles/SoundCloudWidget.module.scss";
 import { Down, Up } from "grommet-icons";
 import { useSession } from "next-auth/react";
 
@@ -30,12 +29,10 @@ interface ISoundCloudWidget {
   email: string;
   url: string;
   setUsers: Dispatch<SetStateAction<IUser[]>>;
-  id: number;
 }
 
-export function SoundCloudWidget({
+export function BackgroundPlayer({
   url,
-  id,
   email,
   username,
   setUsers,
@@ -45,8 +42,17 @@ export function SoundCloudWidget({
   const [isExpanded, setIsExpanded] = useState(false);
 
   // used to communicate between SC widget and React
+  const { music, setMusic } = useMusicContext();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playlistIndex, setPlaylistIndex] = useState<number>(0);
+  const [playlistIndex, setPlaylistIndex] = useState<number>(
+    music.playlistIndex
+  );
+
+  useEffect(() => {
+    setPlaylistIndex(music.playlistIndex);
+  }, [music.playlistIndex]);
+
+  console.log("playlistIndex:", playlistIndex);
 
   // populated once SoundCloud Widget API is loaded and initialized
   const [player, setPlayer] = useState<any>(false);
@@ -72,6 +78,7 @@ export function SoundCloudWidget({
       player.bind(PLAY, () => {
         // update state to playing
         setIsPlaying(true);
+        setMusic({ url, email, username });
 
         // check to see if song has changed - if so update state with next index
         player.getCurrentSoundIndex((playerPlaylistIndex: number) => {
@@ -119,27 +126,9 @@ export function SoundCloudWidget({
   // React section button click event handlers (play/next/previous)
   //  - adjust React component state based on click events
 
-  const togglePlayback = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const changePlaylistIndex = (skipForward = true) => {
-    // get list of songs from SC widget
-    player.getSounds((playerSongList: any[]) => {
-      let nextIndex = skipForward ? playlistIndex + 1 : playlistIndex - 1;
-
-      // ensure index is not set to less than 0 or greater than playlist
-      if (nextIndex < 0) nextIndex = 0;
-      else if (nextIndex >= playerSongList.length)
-        nextIndex = playerSongList.length - 1;
-
-      setPlaylistIndex(nextIndex);
-    });
-  };
-
   const handleDelete = () => {
     axios
-      .delete(`/api/users/${id}`)
+      .delete(`/api/users/${email}`)
       .then(({ data: { result } }) => {
         setUsers((prev) => prev.filter((user) => user.email !== email));
       })

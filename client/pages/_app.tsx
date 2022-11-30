@@ -3,14 +3,15 @@ import type { AppProps } from "next/app";
 import { Grommet } from "grommet";
 import { useState } from "react";
 import Layout from "../components/Layout";
-import { AuthProvider } from "../context/auth";
+import { MusicProvider } from "../context/music";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
 export enum colors {
   primary = "#228BE6",
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const [theme, setTheme] = useState({
     global: {
       colors: {
@@ -49,15 +50,17 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Grommet theme={theme}>
-      <AuthProvider>
-        <Layout>
-          <Head>
-            <meta name="description" content="Created by Logan Thomas" />
-            <link rel="icon" href="/shwackCloudIcon.png" />
-          </Head>
-          <Component {...pageProps} setTheme={setTheme} />
-        </Layout>
-      </AuthProvider>
+      <MusicProvider>
+        <SessionProvider session={session} refetchInterval={5 * 60}>
+          <Layout>
+            <Head>
+              <meta name="description" content="Created by Logan Thomas" />
+              <link rel="icon" href="/shwackCloudIcon.png" />
+            </Head>
+            <Component {...pageProps} setTheme={setTheme} />
+          </Layout>
+        </SessionProvider>
+      </MusicProvider>
     </Grommet>
   );
 }

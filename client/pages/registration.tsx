@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Box, Button, Form, FormField, Notification, TextInput } from "grommet";
 import type { NextPage } from "next";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +11,6 @@ import {
   formDataInitialState,
   formFields,
 } from "../constants/registration";
-import { useAuthContext } from "../context/auth";
 import { capitalizeFirstLetter } from "../helpers/capitalizeFirstLetter";
 import styles from "../styles/Registration.module.scss";
 import { IErrors, IFormData } from "../types/registration";
@@ -20,7 +20,6 @@ const Registration: NextPage = () => {
   const [errors, setErrors] = useState<IErrors>(errorsInitialState);
   const [serverError, setServerError] = useState("");
 
-  const { user, setUser } = useAuthContext();
   const router = useRouter();
 
   const handleSubmit = (formData: IFormData) => {
@@ -55,8 +54,17 @@ const Registration: NextPage = () => {
     axios
       .post("/api/auth/register", formData)
       .then(({ data: { result } }) => {
-        setUser(result);
-        router.push("/play");
+        signIn("credentials", {
+          redirect: false,
+          email: formData.email,
+          password: formData.password,
+        }).then((result) => {
+          if (result?.error) {
+            setServerError(result.error);
+          } else {
+            router.push("/play");
+          }
+        });
       })
       .catch(
         ({

@@ -4,12 +4,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuthContext } from "../context/auth";
 import styles from "../styles/Home.module.scss";
 import shwackCloudImage from "../public/ShwackCloud.png";
+import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const { user } = useAuthContext();
+  const { data: session, status } = useSession();
   return (
     <div className={styles.container}>
       <Head>
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         <div className={styles.image}>
           <Image alt="ShwackCloud logo" src={shwackCloudImage} />
         </div>
-        {user ? (
+        {session ? (
           <>
             <div className={styles.icon}>
               <h1>Edit profile and/or your SoundCloud Playlist URL</h1>

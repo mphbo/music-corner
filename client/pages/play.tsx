@@ -18,7 +18,6 @@ const Play: NextPage = () => {
     axios
       .get("/api/users")
       .then(({ data: { result } }) => {
-        console.log(result);
         setUsers(result);
       })
       .catch(({ response: { data } }) => setServerError(data));

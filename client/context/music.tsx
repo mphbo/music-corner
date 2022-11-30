@@ -10,7 +10,6 @@ export interface IUser {
   username: string;
   email: string;
   url: string;
-  id: number;
 }
 
 interface IAuthContext {
@@ -20,15 +19,15 @@ interface IAuthContext {
 
 const AuthContext = createContext<any>({});
 
-export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState(null);
+export const MusicProvider = ({ children }: any) => {
+  const [music, setMusic] = useState(null);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ music, setMusic }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuthContext = () => {
+export const useMusicContext = () => {
   return useContext(AuthContext);
 };

@@ -1,3 +1,5 @@
 client/node_modules/
+client/package-lock.json/
 client/.next/
+client/.env.local
 server/node_modules
