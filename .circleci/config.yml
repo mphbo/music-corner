@@ -59,20 +59,20 @@ workflows:
       - build:
           filters:
             branches:
-              only: master
+              only: production
       - publish-latest:
           requires:
             - build
           filters:
             branches:
-              only: master
+              only: production
       - aws-elastic-beanstalk/deploy:
           context: aws-creds
           application-name: music-corner-1
           environment-name: Musiccorner1-env
           filters:
             branches:
-              only: master
+              only: production
           requires:
             - build
             - publish-latest
