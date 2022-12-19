@@ -10,7 +10,6 @@ export const filterMessages = (messages: IMessage[], id: number) => {
 
   filteredMessages.forEach((message: IMessage) => {
     const otherId = message.sender !== id ? message.sender : message.receiver;
-    console.log(otherId);
     if (
       !messagesToReturn.find(
         (m: IMessage) => m.sender === otherId || m.receiver === otherId
@@ -19,7 +18,5 @@ export const filterMessages = (messages: IMessage[], id: number) => {
       messagesToReturn.push(message);
     }
   });
-  console.log(messages);
-  console.log(messagesToReturn);
   return messagesToReturn;
 };

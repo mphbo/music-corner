@@ -1,8 +1,5 @@
 import { Avatar, Box, Button, Stack, Text } from "grommet";
-import { Cloudinary } from "@cloudinary/url-gen";
 import keys from "../../../../utils/keys";
-import { fill } from "@cloudinary/url-gen/actions/resize";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "./styles/User.module.scss";
 

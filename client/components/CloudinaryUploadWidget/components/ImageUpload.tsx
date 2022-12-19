@@ -1,9 +1,14 @@
 import { openUploadWidget } from "../utils/CloudinaryService";
 import styles from "../Cloudinary.module.scss";
 
-const ImageUpload = (props) => {
+interface IImageUpload {
+  cloud_name: string;
+  upload_preset: string;
+  onImageUpload: (id: string) => void;
+}
+
+const ImageUpload = (props: IImageUpload) => {
   const uploadImageWidget = () => {
-    console.log(props);
     let myUploadWidget = openUploadWidget(
       {
         cloudName: props.cloud_name,
@@ -12,7 +17,10 @@ const ImageUpload = (props) => {
         maxImageWidth: 600,
         sources: ["local", "url", "camera"],
       },
-      function (error, result) {
+      function (
+        error: any,
+        result: { info: { public_id: string }; event: string }
+      ) {
         if (!error && result.event === "success") {
           props.onImageUpload(result.info.public_id);
         }
