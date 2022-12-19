@@ -43,7 +43,7 @@ const ChatBox: NextPage = () => {
     return () => {
       socket.off("new-message", handleNewMessage);
     };
-  }, []);
+  }, [otherId, session?.id]);
 
   useEffect(() => {
     scrollToBottom();

@@ -23,7 +23,7 @@ const ChatList = () => {
     };
 
     fetchData();
-  }, []);
+  }, [session]);
 
   const chatListItems = filterMessages(messages, 1).map(
     (chat: IMessage, index) => {
