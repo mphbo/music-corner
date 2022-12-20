@@ -31,6 +31,9 @@ const ChatBox: NextPage = () => {
       setMessages(incomingMessages);
     };
     socket.on("new-message", handleNewMessage);
+    socket.on("connect_error", (e) => {
+      console.log(`connect_error due to ${e.message}`);
+    });
 
     scrollToBottom();
     const fetchData = async () => {
