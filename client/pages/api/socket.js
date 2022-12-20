@@ -6,8 +6,17 @@ export default function handler(req, res) {
     return;
   }
 
-  const io = new Server(res.socket.server);
-  io.set("origins", "*:*");
+  const url =
+    process.env.NODE_ENV === "development"
+      ? "localhost:3000"
+      : "https://music-corner.vercel.app/";
+  console.log(url, process.env.NODE_ENV);
+
+  const io = new Server(res.socket.server, {
+    cors: {
+      origin: url,
+    },
+  });
   res.socket.server.io = io;
 
   const onConnection = (socket) => {
