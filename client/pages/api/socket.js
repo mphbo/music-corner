@@ -7,6 +7,7 @@ export default function handler(req, res) {
   }
 
   const io = new Server(res.socket.server);
+  io.set("origins", "*:*");
   res.socket.server.io = io;
 
   const onConnection = (socket) => {
