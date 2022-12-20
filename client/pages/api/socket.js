@@ -8,8 +8,8 @@ export default function handler(req, res) {
 
   const url =
     process.env.NODE_ENV === "development"
-      ? "localhost:3000"
-      : "https://music-corner.vercel.app/";
+      ? "http://localhost:3000"
+      : "https://music-corner.vercel.app";
   console.log(url, process.env.NODE_ENV);
 
   const io = new Server(res.socket.server, {
