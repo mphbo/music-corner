@@ -36,23 +36,27 @@ function ImageUpload({ id }) {
   };
 
   return (
-    <Box>
+    <Box className={styles.avatarBox}>
       {/* {isImageUploaded ? (
         <>
         <div>Successfully uploaded</div>
         </>
       ) : null} */}
       {/* {isImageUploaded && ( */}
-      <Avatar size="6xl" onTouchMoveCapture={() => console.log("hello")}>
-        <Image
+      {/* <Image
           width="400"
           height="400"
           objectFit="cover"
           src={`
             https://res.cloudinary.com/${keys.cloudName}/image/upload/d_shwackcloud:horse/shwackcloud/${id}
             `}
-        />
-      </Avatar>
+        /> */}
+      <Avatar
+        size="xlarge"
+        className={styles.avatar}
+        src={`https://res.cloudinary.com/${keys.cloudName}/image/upload/c_fill,h_400,w_400/d_shwackcloud:horse.jpg/shwackcloud/${id}.jpg`}
+        // onTouchMoveCapture={() => console.log("hello")}
+      />
       {/* // <CldPhoto publicId={email} cloudName={keys.cloudName} /> */}
       {/* )} */}
       <Button
