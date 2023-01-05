@@ -7,6 +7,13 @@ interface IKeys {
   cloudName: string;
   cloudApiKey: string;
   cloudApiSecret: string;
+
+  nextAuthSecret: string;
+
+  appId: string;
+  key: string;
+  secret: string;
+  cluster: string;
 }
 
 export default <IKeys>{
@@ -21,4 +28,9 @@ export default <IKeys>{
   cloudApiSecret: process.env.CLOUD_API_SECRET,
 
   nextAuthSecret: process.env.NEXTAUTH_SECRET,
+
+  appId: process.env.APP_ID,
+  key: process.env.KEY,
+  secret: process.env.SECRET,
+  cluster: process.env.CLUSTER,
 };

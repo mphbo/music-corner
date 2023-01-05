@@ -7,13 +7,13 @@ import { getMessages } from "../../helpers/getMessages";
 import Message from "./components/Message";
 import { useSession } from "next-auth/react";
 import { createMessage } from "../../helpers/createMessage";
-import { socket } from "../../helpers/socket";
-import axios from "axios";
+import Pusher from "pusher-js";
+import keys from "../../utils/keys";
 
 const ChatBox: NextPage = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
   const [value, setValue] = useState<{ content: string }>({ content: "" });
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
   const { id } = router.query;
   const otherId = typeof id === "string" ? parseInt(id) : 0;
@@ -25,32 +25,41 @@ const ChatBox: NextPage = () => {
   };
 
   useEffect(() => {
-    const handleNewMessage = async (data: any) => {
-      console.log("new-message:", data);
-      const incomingMessages = await getMessages(session?.id, otherId);
-      setMessages(incomingMessages);
-    };
-    socket.on("new-message", handleNewMessage);
-    socket.on("connect_error", (e) => {
-      console.log(`connect_error due to ${e.message}`);
+    const pusher = new Pusher(keys.key, {
+      cluster: keys.cluster,
     });
+    const channel = pusher.subscribe("chat");
+    channel.bind("message", (message: IMessage) => {
+      console.log("message received:", message);
+      const fetchData = async () => {
+        const messages = await getMessages(session?.id, otherId);
+        setMessages(messages);
+      };
+      fetchData();
+      // setMessages((prev) => {
+      //   return prev.find((m: IMessage) => m.id === message.id)
+      //     ? prev
+      //     : [...prev, message];
+      // });
+    });
+  }, []);
 
+  useEffect(() => {
     scrollToBottom();
     const fetchData = async () => {
-      await axios.get("/api/socket");
       const messages = await getMessages(session?.id, otherId);
       setMessages(messages);
     };
     fetchData();
-
-    return () => {
-      socket.off("new-message", handleNewMessage);
-    };
   }, [otherId, session?.id]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleReset = () => {
+    setValue({ content: "" });
+  };
 
   const handleSubmit = async (value: { content: string }) => {
     const time = new Date().getTime();
@@ -60,16 +69,11 @@ const ChatBox: NextPage = () => {
       receiver: otherId,
       time,
     };
-    const result = await createMessage(messageObject);
-    socket.emit("message", messageObject);
-    console.log("result:", result);
-    const messages = await getMessages(session?.id, otherId);
-    setMessages(messages);
-    setValue({ content: "" });
-  };
-
-  const handleReset = () => {
-    setValue({ content: "" });
+    const { isSuccess, result } = await createMessage(messageObject);
+    if (isSuccess) {
+      setMessages((prev) => [...prev, result]);
+    }
+    handleReset();
   };
 
   const messageListItems = messages?.map((message: IMessage, index) => {

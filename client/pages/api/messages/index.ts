@@ -1,5 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import Pusher from "pusher";
+import { Messages } from "../../../types/messages";
 import { db } from "../../../utils/dbConnect";
+import keys from "../../../utils/keys";
+
+const { appId, key, secret, cluster } = keys;
+const pusher = new Pusher({
+  appId,
+  key,
+  secret,
+  cluster,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,13 +48,23 @@ export default async function handler(
   if (req.method === "POST") {
     const { sender, receiver, content, time } = req.body;
 
-    const message = await (
-      await db.query(
-        "INSERT INTO messages (sender, receiver, content, time) VALUES($1, $2, $3, $4) returning *;",
-        [sender, receiver, content, time]
-      )
-    ).rows[0];
+    let message;
+    try {
+      message = await (
+        await db.query(
+          "INSERT INTO messages (sender, receiver, content, time) VALUES($1, $2, $3, $4) returning *;",
+          [sender, receiver, content, time]
+        )
+      ).rows[0];
+    } catch (e) {
+      return res.status(500).json({
+        result: null,
+        isSuccess: false,
+        message: Messages.ERROR_SENDING_MESSAGE,
+      });
+    }
 
+    pusher.trigger("chat", "message", message);
     res.json({ result: message, isSuccess: true });
   }
 }
