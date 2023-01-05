@@ -5,4 +5,5 @@ export enum Messages {
   ERROR_CREATING_ACCOUNT = "Error creating account",
   INCORRECT_EMAIL_PASSWORD_COMBINATION = "Incorrect email/password combination",
   ERROR_DECRYPTING_PASSWORD = "Error decrypting password",
+  ERROR_SENDING_MESSAGE = "Error sending message",
 }

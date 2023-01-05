@@ -14,15 +14,7 @@ export const createMessage = async ({
       receiver,
       time,
     })
-    .then(({ data: { result } }) => {
-      return result;
-    })
-    .catch(
-      ({
-        response: {
-          data: { message },
-        },
-      }) => console.log(message)
-    );
+    .then(({ data }) => data)
+    .catch(({ data }) => data);
   return result;
 };
