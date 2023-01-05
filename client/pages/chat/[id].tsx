@@ -31,11 +31,16 @@ const ChatBox: NextPage = () => {
     const channel = pusher.subscribe("chat");
     channel.bind("message", (message: IMessage) => {
       console.log("message received:", message);
-      setMessages((prev) => {
-        return prev.find((m: IMessage) => m.id === message.id)
-          ? prev
-          : [...prev, message];
-      });
+      const fetchData = async () => {
+        const messages = await getMessages(session?.id, otherId);
+        setMessages(messages);
+      };
+      fetchData();
+      // setMessages((prev) => {
+      //   return prev.find((m: IMessage) => m.id === message.id)
+      //     ? prev
+      //     : [...prev, message];
+      // });
     });
   }, []);
 
