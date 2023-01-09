@@ -2,16 +2,20 @@ import { Box, Form, FormField, TextInput } from "grommet";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { IMessage } from "../../types/Message";
-import { getMessages } from "../../helpers/getMessages";
-import Message from "./components/Message";
+import { IMessage } from "../../../types/Message";
+import { getMessages } from "../../../helpers/getMessages";
+import Message from "../components/Message";
 import { useSession } from "next-auth/react";
-import { createMessage } from "../../helpers/createMessage";
+import { createMessage } from "../../../helpers/createMessage";
+import styles from "./styles/ChatBox.module.scss";
 import Pusher from "pusher-js";
-import keys from "../../utils/keys";
+import keys from "../../../utils/keys";
+import { Page } from "./constants";
 
 const ChatBox: NextPage = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
+  const [page, setPage] = useState<number>(1);
+  const [count, setCount] = useState<number>(0);
   const [value, setValue] = useState<{ content: string }>({ content: "" });
   const { data: session } = useSession();
   const router = useRouter();
@@ -19,10 +23,32 @@ const ChatBox: NextPage = () => {
   const otherId = typeof id === "string" ? parseInt(id) : 0;
 
   const endOfChatRef = useRef<any>(null);
+  const startOfChatRef = useRef<any>(null);
 
   const scrollToBottom = () => {
     endOfChatRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  function isInViewport(element: any) {
+    const rect = element.getBoundingClientRect();
+    if (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    ) {
+      setPage((prev) => prev + 1);
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const messages = await getMessages(session?.id, otherId, page * Page.TOP);
+      setMessages((prev) => [...messages, ...prev]);
+    };
+    fetchData();
+  }, [page]);
 
   useEffect(() => {
     const pusher = new Pusher(keys.key, {
@@ -36,19 +62,17 @@ const ChatBox: NextPage = () => {
         setMessages(messages);
       };
       fetchData();
-      // setMessages((prev) => {
-      //   return prev.find((m: IMessage) => m.id === message.id)
-      //     ? prev
-      //     : [...prev, message];
-      // });
     });
+
+    const start = document.querySelector("#startOfChat");
+    window.addEventListener("scroll", () => isInViewport(start));
   }, []);
 
   useEffect(() => {
-    scrollToBottom();
     const fetchData = async () => {
       const messages = await getMessages(session?.id, otherId);
       setMessages(messages);
+      scrollToBottom();
     };
     fetchData();
   }, [otherId, session?.id]);
@@ -82,6 +106,7 @@ const ChatBox: NextPage = () => {
 
   return (
     <Box>
+      <div id="startOfChat" className={styles.start} ref={startOfChatRef}></div>
       <Box overflow="scroll">{messageListItems}</Box>
       <Form
         value={value}
@@ -93,7 +118,7 @@ const ChatBox: NextPage = () => {
           <TextInput placeholder="type here" name="content" />
         </FormField>
       </Form>
-      <div style={{ marginTop: 80 }} ref={endOfChatRef}></div>
+      <div className={styles.end} ref={endOfChatRef}></div>
     </Box>
   );
 };

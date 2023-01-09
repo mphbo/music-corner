@@ -7,7 +7,6 @@ import { filterMessages } from "../../../../helpers/filterChatList";
 import { getMessages } from "../../../../helpers/getMessages";
 import { IMessage } from "../../../../types/Message";
 import Chat from "./Chat";
-import styles from "./styles/ChatList.module.scss";
 
 const ChatList = () => {
   const { data: session, status } = useSession();

@@ -17,27 +17,27 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { userId, otherId } = req.query;
+    const { userId, otherId, top, skip } = req.query;
     let messages;
     if (userId === otherId) {
       messages = (
         await db.query(
-          "SELECT * FROM messages WHERE sender=$1 AND receiver=$1",
-          [userId]
+          "SELECT * FROM messages WHERE sender=$1 AND receiver=$1 ORDER BY id LIMIT $2 OFFSET $3",
+          [userId, top, skip]
         )
       ).rows;
     } else if (otherId) {
       messages = (
         await db.query(
-          "SELECT * FROM messages WHERE (sender=$1 AND receiver=$2) OR (sender=$2 AND receiver=$1)",
-          [userId, otherId]
+          "SELECT * FROM messages WHERE (sender=$1 AND receiver=$2) OR (sender=$2 AND receiver=$1) ORDER BY id LIMIT $3 OFFSET $4",
+          [userId, otherId, top, skip]
         )
       ).rows;
     } else {
       messages = (
         await db.query(
-          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1",
-          [userId]
+          "SELECT * FROM messages WHERE sender=$1 OR receiver=$1 ORDER BY id LIMIT $2 OFFSET $3",
+          [userId, top, skip]
         )
       ).rows;
     }
