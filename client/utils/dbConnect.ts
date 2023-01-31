@@ -27,7 +27,7 @@ db.on("connect", (client) => {
     );
   // client
   //   .query(
-  //     ""
+  //     "UPDATE users SET url='https://soundcloud.com/adiiicat/sets/favs' WHERE email='stringusza@hotmail.com'"
   //   )
   //   .catch((error) => console.error(error));
 });

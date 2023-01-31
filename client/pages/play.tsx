@@ -23,16 +23,21 @@ const Play: NextPage = () => {
       .catch(({ response: { data } }) => setServerError(data));
   }, []);
 
-  const players = users.map((user, index) => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ delay: 0.08 }}
-      key={index}
-    >
-      <SoundCloudWidget {...user} setUsers={setUsers} />
-    </motion.div>
-  ));
+  const players = [
+    ...users.filter((user) => user.url.length > 8),
+    ...users.filter((user) => user.url.length <= 8),
+  ]
+    .filter((user) => user.username !== "Test user")
+    .map((user, index) => (
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.08 }}
+        key={index}
+      >
+        <SoundCloudWidget {...user} setUsers={setUsers} />
+      </motion.div>
+    ));
   return (
     <div className={styles.container}>
       <Head>
